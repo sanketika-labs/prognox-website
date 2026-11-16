@@ -1,0 +1,39 @@
+---
+import { proofStats } from '~/data/site';
+
+interface Props {
+  note?: string;
+}
+
+const {
+  note = 'Measured in production Obsrv deployments, the data engineering core of Prognox.',
+} = Astro.props;
+---
+
+<section class="border-y border-[var(--color-ink-700)] bg-[var(--color-ink-950)]/60">
+  <div class="container-page py-12 lg:py-16">
+    <!-- Two columns on a phone keeps each figure readable without endless
+         scrolling; four across once there is room. -->
+    <dl class="grid grid-cols-2 gap-x-5 gap-y-9 lg:grid-cols-4 lg:gap-8">
+      {
+        proofStats.map((stat) => (
+          <div>
+            <dt class="sr-only">{stat.label}</dt>
+            <dd>
+              <span class="block text-[clamp(1.875rem,1.2rem+3vw,3rem)] leading-none font-semibold text-[var(--color-amber-400)]">
+                {stat.value}
+              </span>
+              <span class="mt-2.5 block text-[0.9375rem] leading-snug font-medium text-[var(--color-fg)]">
+                {stat.label}
+              </span>
+              <span class="mt-1 block text-sm leading-snug text-[var(--color-fg-subtle)]">
+                {stat.detail}
+              </span>
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+    <p class="mt-9 text-sm text-[var(--color-fg-subtle)]">{note}</p>
+  </div>
+</section>

@@ -1,0 +1,79 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PageHeader from '~/components/PageHeader.astro';
+import SectionHeading from '~/components/SectionHeading.astro';
+import PlatformFlow from '~/components/PlatformFlow.astro';
+import FeatureGrid from '~/components/FeatureGrid.astro';
+import type { Feature } from '~/lib/types';
+import CTASection from '~/components/CTASection.astro';
+import StatBand from '~/components/StatBand.astro';
+
+const architecture: Feature[] = [
+  {
+    icon: 'database',
+    title: 'Bring your own storage',
+    body: 'Prognox reads and writes open table formats on storage you already own. There is no proprietary data layer to migrate into.',
+  },
+  {
+    icon: 'shield',
+    title: 'Metadata-only intelligence',
+    body: 'The querying layer holds schema and semantics, never your rows. Generated queries execute inside your perimeter.',
+  },
+  {
+    icon: 'plug',
+    title: 'Works with your tools',
+    body: 'Superset, Metabase and existing BI dashboards keep working. Prognox adds a natural-language surface rather than replacing them.',
+  },
+  {
+    icon: 'cloud',
+    title: 'Deploy anywhere',
+    body: 'AWS, GCP, Azure or on-premises, as managed service or self-hosted. The same artefacts run in each.',
+  },
+  {
+    icon: 'code',
+    title: 'Embeddable',
+    body: 'Ship the querying agent inside your own product so your customers get self-service analytics under your brand.',
+  },
+  {
+    icon: 'gauge',
+    title: 'Operable at scale',
+    body: 'Backpressure handling, dead-letter queues and drift detection are built in, which is how deployments hold 100% uptime over years.',
+  },
+];
+---
+
+<BaseLayout
+  title="Platform"
+  description="How Prognox fits together: ingest, process, ask and forecast — one continuous pipeline from raw events to predictive answers."
+>
+  <PageHeader
+    eyebrow="Platform"
+    title="Ingest. Process. Ask. Forecast."
+    lead="Four stages, one pipeline. The first two come from Obsrv, the third from UnQuery, and the fourth is what makes the combination worth more than its parts."
+  />
+
+  <section class="pb-4">
+    <div class="container-page">
+      <PlatformFlow />
+    </div>
+  </section>
+
+  <section class="section-y">
+    <div class="container-page">
+      <SectionHeading
+        eyebrow="Architecture"
+        title="Designed to fit your stack, not replace it"
+        lead="Prognox is deliberately unopinionated about where your data lives and which tools your teams already use."
+      />
+      <div class="mt-12 lg:mt-14">
+        <FeatureGrid features={architecture} />
+      </div>
+    </div>
+  </section>
+
+  <StatBand />
+  <CTASection
+    title="Walk through the pipeline with us"
+    body="We will map these four stages onto your actual data sources and show you where the first answers come from."
+  />
+</BaseLayout>

@@ -1,0 +1,132 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PageHeader from '~/components/PageHeader.astro';
+import Button from '~/components/Button.astro';
+import Icon from '~/components/Icon.astro';
+import { site } from '~/data/site';
+
+const subject = encodeURIComponent('Prognox demo request');
+const body = encodeURIComponent(
+  `Hello Sanketika,
+
+I would like to see a Prognox demo.
+
+Company:
+What we are trying to measure:
+Rough data volume:
+Current stack (sources, warehouse, BI tools):
+
+Thanks,
+`,
+);
+const mailto = `mailto:${site.email}?subject=${subject}&body=${body}`;
+
+const channels = [
+  {
+    icon: 'chat' as const,
+    title: 'Request a demo',
+    body: 'Bring a dataset and a question you care about. We will show you the pipeline and the answer on your own data.',
+    action: { label: 'Email us', href: mailto },
+  },
+  {
+    icon: 'code' as const,
+    title: 'Start with open source',
+    body: 'Prefer to try before talking to anyone? The Apache 2.0 core is on GitHub and deploys on your own infrastructure.',
+    action: { label: 'Browse the repositories', href: site.github },
+  },
+  {
+    icon: 'layers' as const,
+    title: 'Read the documentation',
+    body: 'Architecture, deployment guides and API references for the data engineering core.',
+    action: { label: 'Open the docs', href: site.docs },
+  },
+];
+
+const expectations = [
+  'A reply within one working day',
+  'A technical conversation, not a sales script',
+  'An honest answer if Prognox is the wrong fit for your problem',
+];
+---
+
+<BaseLayout
+  title="Contact"
+  description="Talk to the Sanketika team about Prognox — request a demo on your own data, or start with the open source core."
+>
+  <PageHeader
+    eyebrow="Contact"
+    title="Let's look at your data"
+    lead="The fastest way to judge Prognox is to point it at something you know well. Tell us what that is and we will set it up."
+  />
+
+  <section class="section-y">
+    <div class="container-page">
+      <div class="grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
+        <div class="space-y-5">
+          {
+            channels.map((channel) => (
+              <article class="surface-card p-7 lg:p-8">
+                <div class="flex items-start gap-4">
+                  <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[var(--color-brand-500)]/15 text-[var(--color-signal-400)]">
+                    <Icon name={channel.icon} />
+                  </span>
+                  <div class="min-w-0">
+                    <h2 class="text-[length:var(--text-h3)] font-semibold">{channel.title}</h2>
+                    <p class="mt-2.5 leading-relaxed text-[var(--color-fg-muted)]">
+                      {channel.body}
+                    </p>
+                    <a
+                      href={channel.action.href}
+                      {...(channel.action.href.startsWith('mailto:')
+                        ? {}
+                        : { target: '_blank', rel: 'noopener noreferrer' })}
+                      class="mt-4 inline-flex min-h-11 items-center font-medium text-[var(--color-signal-400)] hover:underline"
+                    >
+                      {channel.action.label} &rarr;
+                    </a>
+                  </div>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+
+        <aside class="surface-card h-fit p-7 lg:sticky lg:top-24 lg:p-8">
+          <h2 class="text-[length:var(--text-h3)] font-semibold">What happens next</h2>
+          <ul class="mt-5 space-y-3" role="list">
+            {
+              expectations.map((item) => (
+                <li class="flex items-start gap-3 text-[0.9375rem]">
+                  <span class="mt-0.5 shrink-0 text-[var(--color-signal-400)]">
+                    <Icon name="check" size={19} />
+                  </span>
+                  <span class="text-[var(--color-fg-muted)]">{item}</span>
+                </li>
+              ))
+            }
+          </ul>
+
+          <div class="mt-7 border-t border-[var(--color-ink-700)] pt-7">
+            <p class="text-sm text-[var(--color-fg-subtle)]">General enquiries</p>
+            <a
+              href={`mailto:${site.email}`}
+              class="mt-1 inline-flex min-h-10 items-center font-medium break-all text-[var(--color-fg)] hover:text-[var(--color-signal-400)]"
+            >
+              {site.email}
+            </a>
+
+            <p class="mt-4 text-sm text-[var(--color-fg-subtle)]">Careers</p>
+            <a
+              href={`mailto:${site.careersEmail}`}
+              class="mt-1 inline-flex min-h-10 items-center font-medium break-all text-[var(--color-fg)] hover:text-[var(--color-signal-400)]"
+            >
+              {site.careersEmail}
+            </a>
+          </div>
+
+          <Button to={mailto} external class="mt-7 w-full">Request a demo</Button>
+        </aside>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

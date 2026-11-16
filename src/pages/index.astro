@@ -1,0 +1,200 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Hero from '~/components/Hero.astro';
+import StatBand from '~/components/StatBand.astro';
+import SectionHeading from '~/components/SectionHeading.astro';
+import FeatureGrid from '~/components/FeatureGrid.astro';
+import type { Feature } from '~/lib/types';
+import CTASection from '~/components/CTASection.astro';
+import Button from '~/components/Button.astro';
+import Icon from '~/components/Icon.astro';
+import { site } from '~/data/site';
+
+const capabilities: Feature[] = [
+  {
+    icon: 'bolt',
+    title: 'Real time by default',
+    body: 'Streams are processed as they arrive, not on a nightly batch. Decisions act on what is happening now.',
+  },
+  {
+    icon: 'unlock',
+    title: 'Zero lock-in',
+    body: 'Open standards and open table formats throughout. Deploy on AWS, GCP, Azure or your own hardware, and leave whenever you want.',
+  },
+  {
+    icon: 'clock',
+    title: 'Querying within hours',
+    body: 'Configuration replaces connector code. Teams go from first connection to first answer in a day, not a quarter.',
+  },
+  {
+    icon: 'chat',
+    title: 'Ask in plain English',
+    body: 'No SQL required. Analysts, product managers and executives get precise answers without waiting on a data team.',
+  },
+  {
+    icon: 'shield',
+    title: 'Your data stays yours',
+    body: 'A metadata-only architecture means generated queries execute inside your environment. Raw data never leaves the perimeter.',
+  },
+  {
+    icon: 'trend',
+    title: 'Pointed at what is next',
+    body: 'Forecasting and anomaly detection run on the same pipelines, so prediction is part of the platform, not a bolted-on project.',
+  },
+];
+
+const halves = [
+  {
+    name: 'Obsrv',
+    role: 'The data engineering half',
+    body: 'Ingestion, real-time processing and storage that has run at national scale for years. It gets your data trustworthy, current and query-ready without custom code.',
+    points: ['2B+ events/day at peak', '100% uptime over 2+ years', 'Apache 2.0 open source core'],
+    path: '/obsrv',
+    accent: 'from-[var(--color-brand-600)]/25',
+  },
+  {
+    name: 'UnQuery',
+    role: 'The intelligence half',
+    body: 'Natural-language querying across modern analytics engines. It turns a question typed in plain English into a correct query, run in your own environment.',
+    points: [
+      'Druid, ClickHouse, Pinot, Iceberg and more',
+      'Metadata-only, queries run in your stack',
+      'Embeddable in your own product',
+    ],
+    path: '/unquery',
+    accent: 'from-[var(--color-signal-500)]/25',
+  },
+];
+---
+
+<BaseLayout
+  title="Prognox — Predictive intelligence on your data"
+  suffix={false}
+  description={site.description}
+>
+  <Hero />
+  <StatBand />
+
+  <!-- The combination story: why these two products are now one. -->
+  <section class="section-y">
+    <div class="container-page">
+      <SectionHeading
+        eyebrow="One platform"
+        title="Two proven products, one continuous path"
+        lead="Prognox is Obsrv and UnQuery brought together. Engineering the data and asking questions of it were always the same job — now they are the same platform."
+      />
+
+      <div class="mt-12 grid gap-5 lg:mt-14 lg:grid-cols-2 lg:gap-6">
+        {
+          halves.map((half) => (
+            <article class="surface-card relative overflow-hidden p-7 lg:p-9">
+              <div
+                class={`pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b ${half.accent} to-transparent`}
+                aria-hidden="true"
+              />
+              <div class="relative">
+                <p class="text-sm font-semibold tracking-wide text-[var(--color-fg-subtle)] uppercase">
+                  {half.role}
+                </p>
+                <h3 class="mt-2 text-[length:var(--text-h2)] font-semibold">{half.name}</h3>
+                <p class="mt-4 leading-relaxed text-[var(--color-fg-muted)]">{half.body}</p>
+                <ul class="mt-6 space-y-2.5" role="list">
+                  {half.points.map((point) => (
+                    <li class="flex items-start gap-3 text-[0.9375rem]">
+                      <span class="mt-0.5 shrink-0 text-[var(--color-signal-400)]">
+                        <Icon name="check" size={19} />
+                      </span>
+                      <span class="text-[var(--color-fg-muted)]">{point}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Button to={half.path} variant="secondary" class="mt-8 w-full sm:w-auto">
+                  Explore {half.name}
+                </Button>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section-y bg-[var(--color-ink-950)]/40">
+    <div class="container-page">
+      <SectionHeading
+        eyebrow="Capabilities"
+        title="What you get on day one"
+        lead="Everything below ships with the platform. None of it requires a services engagement to switch on."
+      />
+      <div class="mt-12 lg:mt-14">
+        <FeatureGrid features={capabilities} />
+      </div>
+    </div>
+  </section>
+
+  <!-- Named-question example: concrete beats abstract. -->
+  <section class="section-y">
+    <div class="container-page">
+      <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+        <div>
+          <SectionHeading
+            eyebrow="In practice"
+            title="From raw events to a straight answer"
+            lead="The question below is typed by a product manager with no SQL. Prognox resolves it against live data and returns a result you can act on."
+            align="left"
+          />
+          <Button to="/platform" variant="ghost" class="mt-6 -ml-2">
+            See how the pipeline fits together &rarr;
+          </Button>
+        </div>
+
+        <div class="surface-card overflow-hidden">
+          <div
+            class="flex items-center gap-2 border-b border-[var(--color-ink-700)] bg-[var(--color-ink-950)]/60 px-4 py-3"
+          >
+            <span class="h-2.5 w-2.5 rounded-full bg-[var(--color-ink-600)]"></span>
+            <span class="h-2.5 w-2.5 rounded-full bg-[var(--color-ink-600)]"></span>
+            <span class="h-2.5 w-2.5 rounded-full bg-[var(--color-ink-600)]"></span>
+            <span class="ml-2 text-xs text-[var(--color-fg-subtle)]">Prognox</span>
+          </div>
+          <div class="space-y-4 p-5 sm:p-6">
+            <div class="flex gap-3">
+              <span
+                class="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[var(--color-ink-700)] text-[var(--color-fg-muted)]"
+              >
+                <Icon name="users" size={15} />
+              </span>
+              <p class="text-[0.9375rem] leading-relaxed text-[var(--color-fg)]">
+                Which districts dropped more than 15% in weekly active learners, and where is that
+                heading next month?
+              </p>
+            </div>
+            <div class="flex gap-3">
+              <span
+                class="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[var(--color-brand-500)]/20 text-[var(--color-signal-400)]"
+              >
+                <Icon name="spark" size={15} />
+              </span>
+              <div class="min-w-0 flex-1">
+                <p class="text-[0.9375rem] leading-relaxed text-[var(--color-fg-muted)]">
+                  Four districts fell below the threshold last week. Three are trending back up;
+                  one continues to decline and is forecast to drop a further 9% by month end.
+                </p>
+                <pre
+                  class="mt-3 overflow-x-auto rounded-lg border border-[var(--color-ink-700)] bg-[var(--color-ink-950)] p-3 text-xs leading-relaxed text-[var(--color-fg-subtle)]"><code>SELECT district, wow_change, forecast_30d
+FROM learner_activity
+WHERE wow_change &lt; -0.15
+ORDER BY wow_change ASC</code></pre>
+                <p class="mt-2.5 text-xs text-[var(--color-fg-subtle)]">
+                  Generated and executed inside your environment.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

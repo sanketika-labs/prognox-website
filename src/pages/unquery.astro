@@ -1,0 +1,140 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PageHeader from '~/components/PageHeader.astro';
+import SectionHeading from '~/components/SectionHeading.astro';
+import FeatureGrid from '~/components/FeatureGrid.astro';
+import type { Feature } from '~/lib/types';
+import CTASection from '~/components/CTASection.astro';
+import Icon from '~/components/Icon.astro';
+
+const features: Feature[] = [
+  {
+    icon: 'search',
+    title: 'Smart querying',
+    body: 'Complex questions are understood and resolved with precision, not approximated. Ambiguity is clarified rather than guessed at.',
+  },
+  {
+    icon: 'bolt',
+    title: 'Lightning fast results',
+    body: 'An optimised engine built for interactive use, so asking a follow-up feels like conversation rather than a new job submission.',
+  },
+  {
+    icon: 'shield',
+    title: 'Enterprise security',
+    body: 'Metadata-only by design. Your rows never leave your environment, because generated queries run where the data already lives.',
+  },
+  {
+    icon: 'spark',
+    title: 'Intelligent insights',
+    body: 'Patterns, outliers and correlations surfaced from the data rather than waiting to be asked about specifically.',
+  },
+  {
+    icon: 'plug',
+    title: 'Keeps your tools',
+    body: 'Superset, Metabase and your existing dashboards carry on working. UnQuery adds a surface rather than demanding a migration.',
+  },
+  {
+    icon: 'code',
+    title: 'Embeddable agents',
+    body: 'Drop the querying agent into your own application so your customers get self-service analytics under your brand.',
+  },
+];
+
+const engines = [
+  'Apache Druid',
+  'ClickHouse',
+  'Apache Pinot',
+  'Apache Iceberg',
+  'Apache Hudi',
+  'Delta Lake',
+  'DuckDB',
+];
+
+const audiences = [
+  {
+    icon: 'users' as const,
+    title: 'Enterprise teams',
+    body: 'Business analysts, product managers, sales and marketing, and executives who need answers without first needing SQL — or a place in the data team queue.',
+  },
+  {
+    icon: 'layers' as const,
+    title: 'B2C platforms',
+    body: 'Self-service analytics for your end customers, and dashboards your product teams can interrogate directly instead of filing requests for.',
+  },
+];
+---
+
+<BaseLayout
+  title="UnQuery"
+  description="UnQuery is the natural-language querying layer of Prognox: ask in plain English across Druid, ClickHouse, Pinot, Iceberg and more, with queries running in your own environment."
+>
+  <PageHeader
+    eyebrow="UnQuery · Natural-language querying"
+    title="Reimagine data queries"
+    lead="Ask in plain language, get instant, accurate insights. UnQuery is the half of Prognox that removes SQL as the price of admission to your own data."
+  />
+
+  <section class="section-y">
+    <div class="container-page">
+      <SectionHeading
+        eyebrow="Beyond prompts, into precision"
+        title="A guess is not an answer"
+        lead="UnQuery resolves a question against your actual schema and semantics before generating a query. The result is one you can put in front of a board, not one you have to check by hand."
+      />
+      <div class="mt-12 lg:mt-14">
+        <FeatureGrid features={features} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section-y bg-[var(--color-ink-950)]/40">
+    <div class="container-page">
+      <div class="grid gap-10 lg:grid-cols-2 lg:gap-16">
+        <div>
+          <SectionHeading
+            eyebrow="Compatibility"
+            title="Speaks to the stack you already run"
+            lead="UnQuery connects to modern analytics engines and lakehouse formats directly. No intermediate copy of your data, no separate warehouse to keep in sync."
+            align="left"
+          />
+        </div>
+        <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2" role="list">
+          {
+            engines.map((engine) => (
+              <li class="surface-card flex items-center gap-3 px-4 py-3.5">
+                <span class="shrink-0 text-[var(--color-signal-400)]">
+                  <Icon name="database" size={19} />
+                </span>
+                <span class="text-[0.9375rem] font-medium">{engine}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-y">
+    <div class="container-page">
+      <SectionHeading eyebrow="Who it is for" title="Built for the people waiting on answers" />
+      <div class="mt-12 grid gap-5 lg:mt-14 lg:grid-cols-2 lg:gap-6">
+        {
+          audiences.map((audience) => (
+            <article class="surface-card p-7 lg:p-9">
+              <span class="mb-5 grid h-11 w-11 place-items-center rounded-xl bg-[var(--color-signal-500)]/15 text-[var(--color-signal-400)]">
+                <Icon name={audience.icon} />
+              </span>
+              <h3 class="text-[length:var(--text-h3)] font-semibold">{audience.title}</h3>
+              <p class="mt-3 leading-relaxed text-[var(--color-fg-muted)]">{audience.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTASection
+    title="Ask your first question"
+    body="Point UnQuery at a schema you know well and try to catch it out. That is the fastest way to judge it."
+  />
+</BaseLayout>

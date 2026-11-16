@@ -1,0 +1,32 @@
+---
+import { href } from '~/lib/href';
+
+interface Props {
+  to: string;
+  variant?: 'primary' | 'secondary' | 'ghost';
+  external?: boolean;
+  class?: string;
+}
+
+const { to, variant = 'primary', external = false, class: className = '' } = Astro.props;
+
+// 44px minimum touch target on every variant — the floor for comfortable
+// tapping on a phone.
+const base =
+  'inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-6 text-[0.9375rem] font-semibold transition-colors sm:text-base';
+
+const variants = {
+  primary: 'bg-[var(--color-brand-500)] text-white hover:bg-[var(--color-brand-600)]',
+  secondary:
+    'border border-[var(--color-ink-600)] bg-[var(--color-ink-800)] text-[var(--color-fg)] hover:border-[var(--color-brand-400)] hover:bg-[var(--color-ink-700)]',
+  ghost:
+    'text-[var(--color-signal-400)] hover:text-[var(--color-signal-300)] px-2 hover:underline',
+} as const;
+
+const resolved = external ? to : href(to);
+const extra = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+---
+
+<a href={resolved} class={`${base} ${variants[variant]} ${className}`} {...extra}>
+  <slot />
+</a>

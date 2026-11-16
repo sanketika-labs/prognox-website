@@ -1,0 +1,86 @@
+---
+import Logo from '~/components/Logo.astro';
+import { footerLinks, site } from '~/data/site';
+import { href } from '~/lib/href';
+
+const year = new Date().getFullYear();
+const isExternal = (path: string) => /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(path);
+---
+
+<footer
+  class="border-t border-[var(--color-ink-700)] bg-[var(--color-ink-950)]"
+  style="padding-bottom: env(safe-area-inset-bottom);"
+>
+  <div class="container-page py-14 lg:py-16">
+    <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(3,1fr)] lg:gap-12">
+      <div class="max-w-sm">
+        <Logo />
+        <p class="mt-4 text-[0.9375rem] leading-relaxed text-[var(--color-fg-muted)]">
+          {site.description}
+        </p>
+        <a
+          href={`mailto:${site.email}`}
+          class="mt-5 inline-flex min-h-11 items-center text-[0.9375rem] font-medium text-[var(--color-signal-400)] hover:underline"
+        >
+          {site.email}
+        </a>
+      </div>
+
+      {
+        footerLinks.map((group) => (
+          <div>
+            <h2 class="text-sm font-semibold tracking-wide text-[var(--color-fg)] uppercase">
+              {group.heading}
+            </h2>
+            <ul class="mt-4 space-y-1">
+              {group.items.map((item) => (
+                <li>
+                  <a
+                    href={isExternal(item.path) ? item.path : href(item.path)}
+                    {...(isExternal(item.path) && !item.path.startsWith('mailto:')
+                      ? { target: '_blank', rel: 'noopener noreferrer' }
+                      : {})}
+                    class="inline-flex min-h-10 items-center text-[0.9375rem] text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-fg)]"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+
+    <div
+      class="mt-12 flex flex-col gap-4 border-t border-[var(--color-ink-700)] pt-7 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p class="text-sm text-[var(--color-fg-subtle)]">
+        &copy; {year} {site.parent.name}. Prognox combines Obsrv and UnQuery.
+      </p>
+      <div class="flex items-center gap-5">
+        <a
+          href={site.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-sm text-[var(--color-fg-subtle)] transition-colors hover:text-[var(--color-fg)]"
+          >GitHub</a
+        >
+        <a
+          href={site.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-sm text-[var(--color-fg-subtle)] transition-colors hover:text-[var(--color-fg)]"
+          >LinkedIn</a
+        >
+        <a
+          href={site.parent.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-sm text-[var(--color-fg-subtle)] transition-colors hover:text-[var(--color-fg)]"
+          >Sanketika</a
+        >
+      </div>
+    </div>
+  </div>
+</footer>

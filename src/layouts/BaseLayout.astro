@@ -1,0 +1,68 @@
+---
+import Header from '~/components/nav/Header.astro';
+import Footer from '~/components/Footer.astro';
+import { site } from '~/data/site';
+import { href } from '~/lib/href';
+import '~/styles/tokens.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Appended to the site name in <title>. Set false for the home page. */
+  suffix?: boolean;
+}
+
+const { title, description = site.description, suffix = true } = Astro.props;
+
+const pageTitle = suffix ? `${title} — ${site.name}` : title;
+
+// Canonical and OG URLs derive from the configured `site`, so moving to a
+// custom domain updates every tag at once rather than leaving stale hosts.
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(href('/og.png'), Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en" class="scheme-dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#0b0e1a" />
+    <meta name="color-scheme" content="dark" />
+
+    <link rel="icon" type="image/svg+xml" href={href('/favicon.svg')} />
+    <link rel="apple-touch-icon" href={href('/apple-touch-icon.png')} />
+    <link rel="sitemap" href={href('/sitemap-index.xml')} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+  </head>
+
+  <body class="flex min-h-[100dvh] flex-col">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-[var(--color-brand-500)] focus:px-4 focus:py-2.5 focus:font-medium focus:text-white"
+    >
+      Skip to content
+    </a>
+
+    <Header />
+
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>
