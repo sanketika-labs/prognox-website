@@ -6,9 +6,8 @@
 
 export const site = {
   name: 'Prognox',
-  tagline: 'Predictive intelligence on your data',
   description:
-    'Prognox unites Obsrv real-time data engineering with unQuery natural-language analytics — from raw events to the answer you need next, in one platform.',
+    "Prognox unites Obsrv's real-time data engineering with unQuery's natural-language analytics — from raw events to the answer you need next, in one platform.",
   email: 'connect@sanketika.in',
   linkedin: 'https://www.linkedin.com/company/sanketika',
   parent: { name: 'Sanketika', url: 'https://sanketika.in' },

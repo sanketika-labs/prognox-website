@@ -32,7 +32,7 @@ const engines = [
     name: 'Obsrv',
     role: 'The engine underneath',
     blurb:
-      'Point it at a stream, a database or a file drop. Schemas infer themselves, transforms are configuration rather than code, and the pipeline holds at national scale.',
+      'Point it at a stream, a database, or a file drop. Schemas infer themselves, transforms are configuration rather than code, and the pipeline holds at national scale.',
     points: ['Ingest from anywhere', 'Real-time processing', 'No connector code to write'],
     link: site.obsrv,
   },
@@ -55,7 +55,7 @@ const engines = [
     <div class="hero-grid" aria-hidden="true"></div>
 
     <div
-      class="container-page relative z-10 flex min-h-[calc(100dvh-4rem)] flex-col justify-center py-20"
+      class="hero-body container-page relative z-10 flex min-h-[calc(100dvh-4rem)] flex-col justify-center py-20"
     >
       <p class="tag">
         <span class="pulse-dot" aria-hidden="true"></span>
@@ -142,18 +142,6 @@ const engines = [
                 ))}
               </ul>
 
-              {/* Proof sits with the engine that earned it, not in the hero. */}
-              {i === 0 && (
-                <dl class="panel-stats">
-                  {proofStats.map((stat) => (
-                    <div class="panel-stat">
-                      <dt>{stat.label}</dt>
-                      <dd>{stat.value}</dd>
-                    </div>
-                  ))}
-                </dl>
-              )}
-
               <a
                 href={engine.link}
                 target="_blank"
@@ -170,12 +158,32 @@ const engines = [
       <span class="seam-badge" aria-hidden="true">+</span>
     </div>
 
+    {/*
+      Proof earns its own full-width rail rather than sitting inside Obsrv's
+      half. Buried in one column it forced that column longer than unQuery's,
+      which no amount of alignment could balance; out here the numbers get the
+      scale they deserve and the attribution is stated rather than implied.
+    */}
+    <div class="proof-rail">
+      <div class="container-page">
+        <p class="tag"><span class="tag-mark"></span>Obsrv, in production</p>
+        <dl class="proof-grid">
+          {proofStats.map((stat) => (
+            <div class="proof-item">
+              <dd>{stat.value}</dd>
+              <dt>{stat.label}</dt>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
+
     <div class="container-page">
       <p
         class="mx-auto mt-14 max-w-2xl text-center text-[length:var(--text-h3)] leading-snug font-[family-name:var(--font-display)] tracking-[-0.03em] text-[var(--color-fg-muted)] lg:mt-20"
       >
-        Raw events in, a plain-English question asked, an answer that also points forward.
-        <span class="text-[var(--color-fg)]">That loop is Prognox.</span>
+        Raw events in. A question in plain English. An answer that also points forward.
+        <span class="text-[var(--color-fg)]">That path is Prognox.</span>
       </p>
     </div>
   </section>
@@ -192,8 +200,8 @@ const engines = [
           </h2>
         </div>
         <p class="mt-6 max-w-xs leading-relaxed text-[var(--color-fg-muted)] lg:mt-0 lg:text-right">
-          An agriculture dataset, pipeline to dashboard — asked in plain English, answered
-          across 24 districts in three states.
+          An agriculture dataset, pipeline to dashboard. Then a question in plain English,
+          answered across 24 districts in three states.
         </p>
       </div>
 
@@ -280,6 +288,21 @@ const engines = [
     font-size: var(--text-display);
     line-height: 0.92;
     letter-spacing: -0.05em;
+  }
+
+  /* A landscape phone is wide and short, so the vw-driven scale reads the
+     room wrong — it sizes for a desktop and the opening runs well past the
+     fold. Height is the constraint here, so cap against it. */
+  @media (max-height: 520px) and (orientation: landscape) {
+    .headline {
+      font-size: clamp(2.25rem, 1.5rem + 3vw, 3.25rem);
+    }
+
+    /* 10rem of vertical padding is a third of the viewport when the viewport
+       is 390px tall. */
+    .hero-body {
+      padding-block: 2rem;
+    }
   }
 
   .pulse-dot {
@@ -452,54 +475,66 @@ const engines = [
     transition: gap 0.2s ease;
   }
 
-  /* Side by side, Obsrv's panel runs longer because it carries the proof
-     table. Pushing both links to the foot of their column puts them on a
-     shared baseline instead of leaving unQuery's half trailing off. */
-  @media (min-width: 1024px) {
-    .panel-link {
-      margin-top: auto;
-      padding-top: 2.5rem;
-    }
-  }
-
   .panel-link:hover {
     gap: 0.85rem;
   }
 
-  /* Proof, ruled as rows rather than columns — the labels are long, and
-     rows stay readable at every width the panel can be. */
-  .panel-stats {
-    width: 100%;
-    max-width: 27rem;
-    margin-top: 2.25rem;
-    border-top: 1px solid var(--color-hairline);
-  }
-
-  .panel-stat {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1.5rem;
-    padding-block: 0.85rem;
+  /* The diptych already closes with a hairline, so the rail takes only a
+     bottom rule — a top rule here would double it. */
+  .proof-rail {
+    padding-block: clamp(2.5rem, 1.5rem + 2.5vw, 3.75rem);
     border-bottom: 1px solid var(--color-hairline);
   }
 
-  .panel-stat dt {
+  .proof-grid {
+    display: grid;
+    gap: 0;
+    margin-top: 2rem;
+  }
+
+  .proof-item {
+    padding-block: 1.25rem;
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  /* Three across once there is room; stacked and ruled before that, which
+     keeps the long third label from shrinking to two words a line. */
+  @media (min-width: 768px) {
+    .proof-grid {
+      grid-template-columns: repeat(3, 1fr);
+      margin-top: 2.5rem;
+    }
+
+    .proof-item {
+      padding-block: 0;
+      padding-inline: 2rem;
+      border-top: 0;
+      border-left: 1px solid var(--color-hairline);
+    }
+
+    .proof-item:first-child {
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+
+  .proof-item dd {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 1.6rem + 3.2vw, 4rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: var(--color-fg);
+  }
+
+  .proof-item dt {
+    margin-top: 0.85rem;
     font-family: var(--font-mono);
-    font-size: 0.625rem;
+    font-size: 0.6875rem;
     letter-spacing: 0.16em;
     line-height: 1.6;
     text-transform: uppercase;
     color: var(--color-fg-faint);
-  }
-
-  .panel-stat dd {
-    flex-shrink: 0;
-    font-family: var(--font-display);
-    font-size: 1.375rem;
-    font-weight: 700;
-    letter-spacing: -0.04em;
-    color: var(--color-fg);
   }
 
   /* The join sits on the seam — only where there is a seam to sit on. */

@@ -21,7 +21,7 @@ const links = [
     <Logo />
 
     <div
-      class="flex flex-wrap items-center gap-x-6 gap-y-2 font-[family-name:var(--font-mono)] text-[0.6875rem] tracking-[0.14em] uppercase"
+      class="flex flex-wrap items-center gap-x-6 font-[family-name:var(--font-mono)] text-[0.6875rem] tracking-[0.14em] uppercase"
     >
       {
         links.map((link) => (
@@ -30,7 +30,7 @@ const links = [
             {...(link.href.startsWith('mailto:')
               ? {}
               : { target: '_blank', rel: 'noopener noreferrer' })}
-            class="text-[var(--color-fg-faint)] transition-colors hover:text-[var(--color-amber)]"
+            class="inline-flex min-h-10 items-center text-[var(--color-fg-faint)] transition-colors hover:text-[var(--color-amber)]"
           >
             {link.label}
           </a>
