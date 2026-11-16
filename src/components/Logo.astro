@@ -1,9 +1,9 @@
 ---
 /**
  * Prognox wordmark. There is no mark — the identity is the split in the word
- * itself: `prog` in the page's own foreground, `nox` in amber.
+ * itself: `Prog` in the page's own foreground, `nox` in amber.
  *
- * `prog` reads as white wherever the surface is dark (the cobalt blocks, the
+ * `Prog` reads as white wherever the surface is dark (the cobalt blocks, the
  * dark theme) because --color-fg resolves to bone there. On the ivory header
  * it resolves to near-black, which is what keeps the wordmark legible in
  * light mode — a literal #fff would disappear.
@@ -16,8 +16,8 @@ const { class: className = '' } = Astro.props;
 ---
 
 <span
-  class={`font-[family-name:var(--font-display)] text-[1.35rem] leading-none font-bold tracking-[-0.045em] lowercase ${className}`}
-  ><span class="text-[var(--color-fg)]">prog</span><span class="text-[var(--color-amber)]"
+  class={`font-[family-name:var(--font-display)] text-[1.35rem] leading-none font-bold tracking-[-0.045em] ${className}`}
+  ><span class="text-[var(--color-fg)]">Prog</span><span class="text-[var(--color-amber)]"
     >nox</span
   ></span
 >
