@@ -4,7 +4,7 @@ Marketing site for **Prognox** — Sanketika's unified platform combining
 [Obsrv](https://sanketika.in/products/obsrv) (real-time data engineering) and
 [unQuery](https://sanketika.in/products/unquery) (natural-language querying).
 
-**Live:** https://sanketika-labs.github.io/prognox-website/
+**Live:** https://prognox.ai
 
 It is deliberately a **single page**. Detail about either product lives on its
 own sanketika.in page; this site links out rather than restating it.
@@ -26,7 +26,7 @@ first paint, plus the handler in `ThemeToggle.astro`.
 
 ```bash
 npm install
-npm run dev        # http://localhost:4321/prognox-website
+npm run dev        # http://localhost:4321
 npm run check      # type-check only
 npm run build      # type-checks, then builds to dist/
 npm run preview    # serve the production build locally
@@ -85,11 +85,18 @@ node scripts/generate-images.mjs
 Pushing to `main` triggers `.github/workflows/deploy.yml`, which builds and
 publishes to GitHub Pages.
 
-### Moving to a custom domain
+### The custom domain
 
-1. In `astro.config.mjs`, set `site` to the domain and `base` to `'/'`
-2. Add `public/CNAME` containing the domain
-3. Point DNS at GitHub Pages and set the domain in repository settings
+The site is served from `prognox.ai`. Two things hold that in place and both
+are required: `public/CNAME`, which ships inside the build artifact, and the
+custom domain recorded in the repository's Pages settings. An Actions-based
+deploy replaces `dist/` wholesale on every push, so deleting the `CNAME` file
+would drop the domain on the next deploy.
+
+DNS lives at GoDaddy: four `A` records on `@` pointing at GitHub's Pages
+addresses (`185.199.108–111.153`), plus a `www` `CNAME` to
+`sanketika-labs.github.io`.
 
 Every internal link resolves through `src/lib/href.ts` and all SEO metadata
-derives from the `site` config value, so nothing else needs changing.
+derives from the `site` config value, so moving again is an edit to `site`,
+`base` and `CNAME` — and nothing else.
