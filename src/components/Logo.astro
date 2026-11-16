@@ -1,8 +1,12 @@
 ---
 /**
- * Prognox mark: a bracketed signal that breaks upward out of its own frame.
- * The brackets are the measured past, the amber stroke is the projection.
- * Placeholder identity — swap this one file when real brand assets arrive.
+ * Prognox wordmark. There is no mark — the identity is the split in the word
+ * itself: `prog` in the page's own foreground, `nox` in amber.
+ *
+ * `prog` reads as white wherever the surface is dark (the cobalt blocks, the
+ * dark theme) because --color-fg resolves to bone there. On the ivory header
+ * it resolves to near-black, which is what keeps the wordmark legible in
+ * light mode — a literal #fff would disappear.
  */
 interface Props {
   class?: string;
@@ -11,26 +15,9 @@ interface Props {
 const { class: className = '' } = Astro.props;
 ---
 
-<span class={`inline-flex items-center gap-2.5 ${className}`}>
-  <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true" class="shrink-0">
-    <path
-      d="M9 3H3v24h6M21 3h6v24h-6"
-      stroke="currentColor"
-      stroke-opacity="0.4"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"></path>
-    <path
-      d="M7.5 20.5L13 14l3.5 3L23 8.5"
-      stroke="var(--color-amber)"
-      stroke-width="2.4"
-      stroke-linecap="round"
-      stroke-linejoin="round"></path>
-    <circle cx="23" cy="8.5" r="2.4" fill="var(--color-amber)"></circle>
-  </svg>
-  <span
-    class="font-[family-name:var(--font-display)] text-[1.2rem] font-bold tracking-[-0.04em] text-[var(--color-fg)]"
-  >
-    prognox
-  </span>
-</span>
+<span
+  class={`font-[family-name:var(--font-display)] text-[1.35rem] leading-none font-bold tracking-[-0.045em] lowercase ${className}`}
+  ><span class="text-[var(--color-fg)]">prog</span><span class="text-[var(--color-amber)]"
+    >nox</span
+  ></span
+>

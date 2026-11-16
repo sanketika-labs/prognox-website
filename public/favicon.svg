@@ -1,6 +1,10 @@
+<!--
+  Monogram: a lowercase "p" drawn as geometry rather than type, so it does
+  not depend on a font being installed. The bone stem and amber bowl carry
+  the same split as the prog/nox wordmark.
+-->
 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
   <rect width="64" height="64" rx="14" fill="#10224b"/>
-  <path d="M20 10H10v44h10M44 10h10v44H44" stroke="#f4f6fb" stroke-opacity="0.38" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <path d="M17 43L28 30l7 6 13-17" stroke="#f0a52e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <circle cx="48" cy="19" r="5" fill="#f0a52e"/>
+  <circle cx="36.5" cy="28" r="12.5" fill="none" stroke="#f0a52e" stroke-width="7"/>
+  <rect x="17" y="13" width="7" height="40" rx="3.5" fill="#f4f6fb"/>
 </svg>

@@ -38,7 +38,7 @@
 
   --color-fg: #141a28;
   --color-fg-muted: #5c6578;
-  --color-fg-faint: #8a91a0;
+  --color-fg-faint: #636b7d;
 
   /* ── Rules (flips) ─────────────────────────────────────────────────── */
 
@@ -49,7 +49,7 @@
 
   --color-bone: #f4f6fb;
   --color-bone-muted: #a8b3cc;
-  --color-bone-faint: #74819f;
+  --color-bone-faint: #8b98b6;
   --color-hairline-block: #22325c;
 
   /* ── Accents ───────────────────────────────────────────────────────── */
@@ -81,7 +81,7 @@
 
   --color-fg: #eef1f8;
   --color-fg-muted: #a3adc4;
-  --color-fg-faint: #737f99;
+  --color-fg-faint: #8a95ad;
 
   --color-hairline: #1e2740;
 

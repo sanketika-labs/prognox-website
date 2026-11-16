@@ -80,22 +80,6 @@ const engines = [
         </Button>
         <Button to="#platform" variant="wire">How it fits together</Button>
       </div>
-
-      {/* Proof, set as a hairline table rather than a row of badge pills. */}
-      <dl class="stats mt-16 lg:mt-20">
-        {
-          proofStats.map((stat) => (
-            <div class="stat">
-              <dt class="font-[family-name:var(--font-mono)] text-[0.625rem] tracking-[0.2em] text-[var(--color-fg-faint)] uppercase">
-                {stat.label}
-              </dt>
-              <dd class="mt-2 font-[family-name:var(--font-display)] text-[clamp(1.5rem,1.1rem+1.6vw,2.25rem)] font-bold tracking-[-0.04em] text-[var(--color-fg)]">
-                {stat.value}
-              </dd>
-            </div>
-          ))
-        }
-      </dl>
     </div>
   </section>
 
@@ -157,11 +141,24 @@ const engines = [
                   </li>
                 ))}
               </ul>
+
+              {/* Proof sits with the engine that earned it, not in the hero. */}
+              {i === 0 && (
+                <dl class="panel-stats">
+                  {proofStats.map((stat) => (
+                    <div class="panel-stat">
+                      <dt>{stat.label}</dt>
+                      <dd>{stat.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
+
               <a
                 href={engine.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="panel-link mt-10 inline-flex min-h-11 items-center gap-2 self-start font-[family-name:var(--font-mono)] text-[0.75rem] font-medium tracking-[0.14em] uppercase"
+                class="panel-link inline-flex min-h-11 items-center gap-2 self-start font-[family-name:var(--font-mono)] text-[0.75rem] font-medium tracking-[0.14em] uppercase"
               >
                 Explore {engine.name}
                 <Icon name="arrowUpRight" size={15} />
@@ -299,36 +296,6 @@ const engines = [
     }
     100% {
       box-shadow: 0 0 0 0 rgb(240 165 46 / 0);
-    }
-  }
-
-  /* Stats as a hairline-ruled table — a quieter, more editorial proof block. */
-  .stats {
-    display: grid;
-    gap: 0;
-    border-top: 1px solid var(--color-hairline);
-    max-width: 44rem;
-  }
-
-  .stat {
-    padding-block: 1.15rem;
-    border-bottom: 1px solid var(--color-hairline);
-  }
-
-  @media (min-width: 640px) {
-    .stats {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      border-bottom: 1px solid var(--color-hairline);
-    }
-
-    .stat {
-      border-bottom: 0;
-      padding-inline-end: 1.5rem;
-    }
-
-    .stat + .stat {
-      border-left: 1px solid var(--color-hairline);
-      padding-inline-start: 1.5rem;
     }
   }
 
@@ -477,14 +444,61 @@ const engines = [
   }
 
   .panel-link {
+    margin-top: 2.5rem;
     color: var(--color-link);
     border-bottom: 1px solid currentColor;
     padding-bottom: 0.2rem;
     transition: gap 0.2s ease;
   }
 
+  /* Side by side, Obsrv's panel runs longer because it carries the proof
+     table. Pushing both links to the foot of their column puts them on a
+     shared baseline instead of leaving unQuery's half trailing off. */
+  @media (min-width: 1024px) {
+    .panel-link {
+      margin-top: auto;
+      padding-top: 2.5rem;
+    }
+  }
+
   .panel-link:hover {
     gap: 0.85rem;
+  }
+
+  /* Proof, ruled as rows rather than columns — the labels are long, and
+     rows stay readable at every width the panel can be. */
+  .panel-stats {
+    width: 100%;
+    max-width: 27rem;
+    margin-top: 2.25rem;
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  .panel-stat {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.85rem;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .panel-stat dt {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.16em;
+    line-height: 1.6;
+    text-transform: uppercase;
+    color: var(--color-fg-faint);
+  }
+
+  .panel-stat dd {
+    flex-shrink: 0;
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--color-fg);
   }
 
   /* The join sits on the seam — only where there is a seam to sit on. */

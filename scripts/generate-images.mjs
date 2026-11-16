@@ -14,13 +14,19 @@ const BONE_MUTED = '#a8b3cc';
 const BONE_FAINT = '#74819f';
 const HAIRLINE = '#22325c';
 
-/** The bracketed signal from src/components/Logo.astro, drawn at `s` scale. */
-const mark = (x, y, s) => `
-  <g transform="translate(${x} ${y}) scale(${s})">
-    <path d="M9 3H3v24h6M21 3h6v24h-6" stroke="${BONE}" stroke-opacity="0.4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    <path d="M7.5 20.5L13 14l3.5 3L23 8.5" stroke="${AMBER}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    <circle cx="23" cy="8.5" r="2.4" fill="${AMBER}"/>
+/**
+ * Monogram: a lowercase "p" drawn as geometry rather than type, so it does
+ * not depend on a font being installed. Mirrors public/favicon.svg.
+ */
+const monogram = (scale) => `
+  <g transform="scale(${scale})">
+    <circle cx="36.5" cy="28" r="12.5" fill="none" stroke="${AMBER}" stroke-width="7"/>
+    <rect x="17" y="13" width="7" height="40" rx="3.5" fill="${BONE}"/>
   </g>`;
+
+/** The wordmark: `prog` in bone, `nox` in amber. */
+const wordmark = (x, y, size) =>
+  `<text x="${x}" y="${y}" font-family="Helvetica, Arial, sans-serif" font-size="${size}" font-weight="700" letter-spacing="${-size * 0.04}" fill="${BONE}">prog<tspan fill="${AMBER}">nox</tspan></text>`;
 
 const og = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
@@ -37,8 +43,7 @@ const og = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" vi
   <rect width="1200" height="630" fill="url(#cobalt)"/>
   <rect width="1200" height="630" fill="url(#warm)"/>
 
-  ${mark(80, 78, 1.6)}
-  <text x="166" y="128" font-family="Helvetica, Arial, sans-serif" font-size="40" font-weight="700" letter-spacing="-1.5" fill="${BONE}">prognox</text>
+  ${wordmark(80, 128, 46)}
 
   <text x="80" y="288" font-family="Helvetica, Arial, sans-serif" font-size="92" font-weight="700" letter-spacing="-4" fill="${BONE}">Data. <tspan fill="${AMBER}">Answered.</tspan></text>
   <text x="80" y="384" font-family="Helvetica, Arial, sans-serif" font-size="92" font-weight="700" letter-spacing="-4" fill="${BONE_MUTED}">Ahead of time.</text>
@@ -51,7 +56,7 @@ const og = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" vi
 
 const touchIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180">
   <rect width="180" height="180" rx="40" fill="${BLOCK}"/>
-  ${mark(30, 30, 4)}
+  ${monogram(180 / 64)}
 </svg>`;
 
 for (const [name, svg] of [
