@@ -25,7 +25,6 @@ This site is the public marketing home for Prognox. It must:
 | Framework | Astro 5 — static output, zero JS by default |
 | Styling | Tailwind CSS 4, mobile-first |
 | Content | Markdown/MDX via Astro content collections |
-| Islands | `@astrojs/react` — used only by the two interactive components |
 | Icons | Lucide (inline SVG, no runtime) |
 | Fonts | Inter, self-hosted and subset — no external CDN request |
 | Hosting | GitHub Pages |
@@ -35,8 +34,15 @@ This site is the public marketing home for Prognox. It must:
 is interacted with. Astro emits plain HTML, so first paint is fast on mobile
 networks and crawlers index real content. A React SPA on GitHub Pages
 additionally needs a `404.html` redirect hack for deep links; Astro does not.
-Islands of interactivity (mobile nav drawer, tabbed platform diagram) hydrate
-individually.
+
+**Amended during implementation — no framework runtime at all.** The two
+interactive pieces (mobile nav drawer, platform flow tabs) were first built as
+React islands. Because the nav drawer appears in the header, that shipped
+React's 215 kB runtime (67 kB gzip) on *every mobile page view* to operate a
+hamburger menu — directly against the mobile performance target in §4. Both
+were rewritten as progressive-enhancement scripts over markup that already
+works without them, and `@astrojs/react` was removed. The build now emits zero
+JavaScript bundles; the two scripts are inlined and together are under 2 kB.
 
 ## 3. Hosting and the future domain
 
@@ -104,11 +110,11 @@ src/
 ├─ layouts/BaseLayout.astro      # <head>, SEO meta, nav, footer slot
 ├─ components/
 │  ├─ nav/Header.astro           # desktop nav
-│  ├─ nav/MobileDrawer.tsx       # island: hydrates on mobile only
+│  ├─ nav/MobileDrawer.astro     # inline script, no framework
 │  ├─ Hero.astro
 │  ├─ FeatureGrid.astro          # props: features[]
 │  ├─ StatBand.astro             # props: stats[]
-│  ├─ PlatformFlow.tsx           # island: interactive pipeline diagram
+│  ├─ PlatformFlow.astro         # inline script, no framework
 │  ├─ UseCaseCard.astro
 │  ├─ PricingTable.astro
 │  ├─ CTASection.astro
@@ -163,7 +169,8 @@ should claim them outright, that is a one-line copy change per stat.
   `mailto:` CTA to `connect@sanketika.in`. A hosted form endpoint (Formspree or
   similar) can be added later without structural change.
 - No-JS fallback: every page is fully readable and navigable with JavaScript
-  disabled, since only two components are islands.
+  disabled. The platform flow renders all four stage panels and only collapses
+  them once its script marks the component enhanced.
 
 ## 10. Testing and verification
 
