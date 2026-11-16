@@ -142,6 +142,32 @@ const engines = [
                 ))}
               </ul>
 
+              {/*
+                Each engine closes on its own evidence, in a band of matching
+                height so the two columns stay level. Obsrv's case is the
+                numbers it has run; unQuery's is a question asked as anyone
+                would say it — which is the whole claim, demonstrated.
+              */}
+              {i === 0 && (
+                <dl class="panel-stats">
+                  {proofStats.map((stat) => (
+                    <div class="panel-stat">
+                      <dd>{stat.value}</dd>
+                      <dt>{stat.label}</dt>
+                    </div>
+                  ))}
+                </dl>
+              )}
+
+              {i === 1 && (
+                <figure class="panel-ask">
+                  <figcaption>A question, as asked</figcaption>
+                  <blockquote>
+                    {'\u201cWhich regions fell behind last quarter, and which are about to?\u201d'}
+                  </blockquote>
+                </figure>
+              )}
+
               <a
                 href={engine.link}
                 target="_blank"
@@ -156,26 +182,6 @@ const engines = [
         ))
       }
       <span class="seam-badge" aria-hidden="true">+</span>
-    </div>
-
-    {/*
-      Proof earns its own full-width rail rather than sitting inside Obsrv's
-      half. Buried in one column it forced that column longer than unQuery's,
-      which no amount of alignment could balance; out here the numbers get the
-      scale they deserve and the attribution is stated rather than implied.
-    */}
-    <div class="proof-rail">
-      <div class="container-page">
-        <p class="tag"><span class="tag-mark"></span>Obsrv, in production</p>
-        <dl class="proof-grid">
-          {proofStats.map((stat) => (
-            <div class="proof-item">
-              <dd>{stat.value}</dd>
-              <dt>{stat.label}</dt>
-            </div>
-          ))}
-        </dl>
-      </div>
     </div>
 
     <div class="container-page">
@@ -479,62 +485,83 @@ const engines = [
     gap: 0.85rem;
   }
 
-  /* The diptych already closes with a hairline, so the rail takes only a
-     bottom rule — a top rule here would double it. */
-  .proof-rail {
-    padding-block: clamp(2.5rem, 1.5rem + 2.5vw, 3.75rem);
-    border-bottom: 1px solid var(--color-hairline);
-  }
-
-  .proof-grid {
+  /* Proof, ruled as a strip across the panel foot. Stacked rows read fine
+     but cost twice the height, and that height is exactly what pushed this
+     column past unQuery's. */
+  .panel-stats {
     display: grid;
-    gap: 0;
-    margin-top: 2rem;
-  }
-
-  .proof-item {
-    padding-block: 1.25rem;
+    width: 100%;
+    margin-top: 2.5rem;
     border-top: 1px solid var(--color-hairline);
   }
 
-  /* Three across once there is room; stacked and ruled before that, which
-     keeps the long third label from shrinking to two words a line. */
-  @media (min-width: 768px) {
-    .proof-grid {
+  .panel-stat {
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  /* Three across only once the columns are wide enough to hold the longest
+     label in two lines — below roughly 170px per column it runs to three and
+     the row goes ragged, so stacked rows are the better form down there. */
+  @media (min-width: 600px) {
+    .panel-stats {
       grid-template-columns: repeat(3, 1fr);
-      margin-top: 2.5rem;
+      gap: 1.5rem;
     }
 
-    .proof-item {
-      padding-block: 0;
-      padding-inline: 2rem;
-      border-top: 0;
-      border-left: 1px solid var(--color-hairline);
-    }
-
-    .proof-item:first-child {
-      padding-left: 0;
-      border-left: 0;
+    .panel-stat {
+      border-bottom: 0;
+      padding-bottom: 0;
     }
   }
 
-  .proof-item dd {
+  .panel-stat dd {
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 1.6rem + 3.2vw, 4rem);
+    font-size: clamp(1.75rem, 1.3rem + 1.4vw, 2.25rem);
     font-weight: 700;
     line-height: 1;
-    letter-spacing: -0.05em;
+    letter-spacing: -0.045em;
     color: var(--color-fg);
   }
 
-  .proof-item dt {
-    margin-top: 0.85rem;
+  .panel-stat dt {
+    margin-top: 0.6rem;
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    letter-spacing: 0.16em;
-    line-height: 1.6;
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    line-height: 1.5;
     text-transform: uppercase;
     color: var(--color-fg-faint);
+  }
+
+  /* unQuery's counterpart to the stat strip — same hairline, same top
+     margin, so the two bands line up across the seam. */
+  .panel-ask {
+    width: 100%;
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  .panel-ask figcaption {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    line-height: 1.5;
+    text-transform: uppercase;
+    color: var(--color-fg-faint);
+  }
+
+  .panel-ask blockquote {
+    margin-top: 0.75rem;
+    max-width: 24rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.0625rem, 0.95rem + 0.5vw, 1.25rem);
+    line-height: 1.35;
+    letter-spacing: -0.02em;
+    color: var(--color-fg);
+    border-left: 2px solid var(--color-link);
+    padding-left: 0.9rem;
   }
 
   /* The join sits on the seam — only where there is a seam to sit on. */
