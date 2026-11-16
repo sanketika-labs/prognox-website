@@ -8,12 +8,11 @@ import '~/styles/tokens.css';
 interface Props {
   title: string;
   description?: string;
-  /** Appended to the site name in <title>. Set false for the home page. */
+  /** Appended to the site name in <title>. Set false when the title stands alone. */
   suffix?: boolean;
 }
 
 const { title, description = site.description, suffix = true } = Astro.props;
-
 const pageTitle = suffix ? `${title} — ${site.name}` : title;
 
 // Canonical and OG URLs derive from the configured `site`, so moving to a
@@ -23,15 +22,14 @@ const ogImage = new URL(href('/og.png'), Astro.site).href;
 ---
 
 <!doctype html>
-<html lang="en" class="scheme-dark">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <meta name="theme-color" content="#0b0e1a" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#fbfaf7" />
 
     <link rel="icon" type="image/svg+xml" href={href('/favicon.svg')} />
     <link rel="apple-touch-icon" href={href('/apple-touch-icon.png')} />
@@ -47,12 +45,27 @@ const ogImage = new URL(href('/og.png'), Astro.site).href;
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+
+    {/*
+      Applies the stored theme before the first paint, so a visitor who chose
+      dark never sees a white flash. Light is the default when nothing is
+      stored. Deliberately inline and synchronous — a deferred module would
+      run after paint, which is the whole problem this avoids.
+    */}
+    <script is:inline>
+      try {
+        if (localStorage.getItem('prognox-theme') === 'dark') {
+          document.documentElement.dataset.theme = 'dark';
+          document.querySelector('meta[name="theme-color"]').content = '#0c1222';
+        }
+      } catch {}
+    </script>
   </head>
 
   <body class="flex min-h-[100dvh] flex-col">
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-[var(--color-brand-500)] focus:px-4 focus:py-2.5 focus:font-medium focus:text-white"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:bg-[var(--color-amber)] focus:px-4 focus:py-2.5 focus:font-semibold focus:text-[#141a28]"
     >
       Skip to content
     </a>

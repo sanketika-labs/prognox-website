@@ -4,19 +4,21 @@ import { iconPaths, type IconName } from '~/lib/icons';
 interface Props {
   name: IconName;
   size?: number;
+  /** Solid rather than stroked — used for the play triangle. */
+  solid?: boolean;
   class?: string;
 }
 
-const { name, size = 22, class: className = '' } = Astro.props;
+const { name, size = 20, solid = false, class: className = '' } = Astro.props;
 ---
 
 <svg
   width={size}
   height={size}
   viewBox="0 0 24 24"
-  fill="none"
+  fill={solid ? 'currentColor' : 'none'}
   stroke="currentColor"
-  stroke-width="1.6"
+  stroke-width={solid ? 0 : 1.7}
   stroke-linecap="round"
   stroke-linejoin="round"
   aria-hidden="true"

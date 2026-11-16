@@ -1,67 +1,34 @@
 /**
- * Single source of truth for navigation, contact details and shared copy.
- * Editing site-wide text happens here, not inside components.
+ * Single source of truth for shared copy and outbound links.
+ * Prognox is a one-page site: detail lives on the Obsrv and unQuery product
+ * pages, which this file points at rather than duplicating.
  */
 
 export const site = {
   name: 'Prognox',
   tagline: 'Predictive intelligence on your data',
   description:
-    'Prognox unifies real-time data engineering with natural-language querying, so your data is pipeline-ready, answerable in plain English, and pointed at what happens next.',
+    'Prognox unites Obsrv real-time data engineering with unQuery natural-language analytics — from raw events to the answer you need next, in one platform.',
   email: 'connect@sanketika.in',
-  careersEmail: 'careers@sanketika.in',
-  github: 'https://github.com/sanketika-labs',
   linkedin: 'https://www.linkedin.com/company/sanketika',
-  docs: 'https://docs.obsrv.ai',
   parent: { name: 'Sanketika', url: 'https://sanketika.in' },
+  obsrv: 'https://sanketika.in/products/obsrv',
+  unquery: 'https://sanketika.in/products/unquery',
 } as const;
 
-export type NavItem = { label: string; path: string };
-
-export const nav: NavItem[] = [
-  { label: 'Platform', path: '/platform' },
-  { label: 'Obsrv', path: '/obsrv' },
-  { label: 'UnQuery', path: '/unquery' },
-  { label: 'Use Cases', path: '/use-cases' },
-  { label: 'Pricing', path: '/pricing' },
-];
-
-export const footerLinks: { heading: string; items: NavItem[] }[] = [
-  {
-    heading: 'Product',
-    items: [
-      { label: 'Platform', path: '/platform' },
-      { label: 'Obsrv', path: '/obsrv' },
-      { label: 'UnQuery', path: '/unquery' },
-      { label: 'Pricing', path: '/pricing' },
-    ],
-  },
-  {
-    heading: 'Resources',
-    items: [
-      { label: 'Documentation', path: site.docs },
-      { label: 'GitHub', path: site.github },
-      { label: 'Use Cases', path: '/use-cases' },
-    ],
-  },
-  {
-    heading: 'Company',
-    items: [
-      { label: 'Sanketika', path: site.parent.url },
-      { label: 'Contact', path: '/contact' },
-      { label: 'Careers', path: `mailto:${site.careersEmail}` },
-    ],
-  },
-];
+/** In-page anchors — the only navigation this site has. */
+export const sections = [
+  { label: 'Platform', id: 'platform' },
+  { label: 'Demo', id: 'demo' },
+  { label: 'Contact', id: 'contact' },
+] as const;
 
 /**
- * Proof points measured in production Obsrv deployments. They are presented
- * on-site with that attribution rather than claimed by the Prognox brand
- * directly — accurate while the combined product is new.
+ * Proof points measured in production Obsrv deployments, presented with that
+ * attribution rather than claimed by the Prognox brand directly.
  */
 export const proofStats = [
-  { value: '2B+', label: 'Events per day at peak', detail: 'Sustained ingestion ceiling' },
-  { value: '100%', label: 'Uptime over 2+ years', detail: 'National-scale production' },
-  { value: '500M+', label: 'Daily events on DIKSHA', detail: "India's education platform" },
-  { value: '80%', label: 'Infrastructure cost saved', detail: 'EdTech enterprise migration' },
-];
+  { value: '2B+', label: 'Events per day' },
+  { value: '100%', label: 'Uptime, 2+ years' },
+  { value: 'DIKSHA', label: 'Battle-tested at national scale' },
+] as const;

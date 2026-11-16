@@ -1,47 +1,24 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import Button from '~/components/Button.astro';
-import { nav } from '~/data/site';
-import { href } from '~/lib/href';
 ---
 
 <BaseLayout title="Page not found" description="That page does not exist on the Prognox site.">
-  <section class="section-y">
-    <div class="container-page">
-      <div class="mx-auto max-w-xl text-center">
-        <p class="text-[clamp(4rem,3rem+8vw,8rem)] leading-none font-semibold text-gradient">
-          404
-        </p>
-        <h1 class="mt-4 text-[length:var(--text-h2)] font-semibold">
-          We could not find that page
-        </h1>
-        <p class="mt-4 text-[length:var(--text-lead)] leading-relaxed text-[var(--color-fg-muted)]">
-          The link may be out of date, or the page may have moved. Here is the way back.
-        </p>
-
-        <div class="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:justify-center">
-          <Button to="/">Back to home</Button>
-          <Button to="/contact" variant="secondary">Contact us</Button>
-        </div>
-
-        <nav class="mt-12 border-t border-[var(--color-ink-700)] pt-8" aria-label="Site sections">
-          <p class="text-sm text-[var(--color-fg-subtle)]">Or jump to a section</p>
-          <ul class="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-2" role="list">
-            {
-              nav.map((item) => (
-                <li>
-                  <a
-                    href={href(item.path)}
-                    class="inline-flex min-h-11 items-center font-medium text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-signal-400)]"
-                  >
-                    {item.label}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </nav>
-      </div>
+  <section class="container-page flex min-h-[calc(100dvh-9rem)] flex-col justify-center py-20">
+    <p class="tag"><span class="tag-mark"></span>Error 404</p>
+    <p
+      class="mt-8 font-[family-name:var(--font-display)] text-[clamp(5rem,3rem+12vw,12rem)] leading-none font-bold tracking-[-0.06em] outline-text"
+    >
+      404
+    </p>
+    <h1 class="mt-6 max-w-[18ch] text-[length:var(--text-h2)] leading-[1.05] font-bold">
+      Nothing lives at this address.
+    </h1>
+    <p class="mt-6 max-w-md text-[length:var(--text-lead)] leading-relaxed text-[var(--color-fg-muted)]">
+      Prognox is a single page — whatever you were after is almost certainly on it.
+    </p>
+    <div class="mt-10">
+      <Button to="/" variant="amber">Back to the start</Button>
     </div>
   </section>
 </BaseLayout>

@@ -3,24 +3,24 @@ import { href } from '~/lib/href';
 
 interface Props {
   to: string;
-  variant?: 'primary' | 'secondary' | 'ghost';
+  variant?: 'amber' | 'wire';
+  /** Skip base-path resolution and open in a new tab. */
   external?: boolean;
   class?: string;
 }
 
-const { to, variant = 'primary', external = false, class: className = '' } = Astro.props;
+const { to, variant = 'amber', external = false, class: className = '' } = Astro.props;
 
-// 44px minimum touch target on every variant — the floor for comfortable
-// tapping on a phone.
+// Squared-off and 48px tall — above the 44px minimum touch target, with a
+// mono label so buttons read as part of the same system as the tags.
 const base =
-  'inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-6 text-[0.9375rem] font-semibold transition-colors sm:text-base';
+  'inline-flex min-h-12 items-center justify-center gap-2.5 px-6 font-[family-name:var(--font-mono)] text-[0.8125rem] font-medium tracking-[0.1em] uppercase transition-colors duration-200';
 
+// `wire` reads its colours from the surrounding surface, so the same variant
+// works on the cobalt block and on the light page without a second class.
 const variants = {
-  primary: 'bg-[var(--color-brand-500)] text-white hover:bg-[var(--color-brand-600)]',
-  secondary:
-    'border border-[var(--color-ink-600)] bg-[var(--color-ink-800)] text-[var(--color-fg)] hover:border-[var(--color-brand-400)] hover:bg-[var(--color-ink-700)]',
-  ghost:
-    'text-[var(--color-signal-400)] hover:text-[var(--color-signal-300)] px-2 hover:underline',
+  amber: 'bg-[var(--color-amber)] text-[#141a28] hover:bg-[var(--color-amber-deep)]',
+  wire: 'border border-[var(--color-hairline)] text-[var(--color-fg)] hover:border-[var(--color-amber)] hover:text-[var(--color-amber)]',
 } as const;
 
 const resolved = external ? to : href(to);

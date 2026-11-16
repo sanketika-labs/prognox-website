@@ -1,200 +1,618 @@
 ---
+/**
+ * Prognox — the whole site.
+ *
+ * Five movements on one page: a cobalt opening block, a running proof ticker,
+ * the two engines as a split diptych on the light page, the demo on an
+ * alternate band, and a closing cobalt block. Detail about either product
+ * lives on its own sanketika.in page; this site links out rather than
+ * restating it.
+ *
+ * Nothing below names a literal colour — the semantic variables in tokens.css
+ * carry both themes, so there is not a single `dark:` variant on this page.
+ */
 import BaseLayout from '~/layouts/BaseLayout.astro';
-import Hero from '~/components/Hero.astro';
-import StatBand from '~/components/StatBand.astro';
-import SectionHeading from '~/components/SectionHeading.astro';
-import FeatureGrid from '~/components/FeatureGrid.astro';
-import type { Feature } from '~/lib/types';
-import CTASection from '~/components/CTASection.astro';
 import Button from '~/components/Button.astro';
 import Icon from '~/components/Icon.astro';
-import { site } from '~/data/site';
+import { href } from '~/lib/href';
+import { site, proofStats } from '~/data/site';
 
-const capabilities: Feature[] = [
-  {
-    icon: 'bolt',
-    title: 'Real time by default',
-    body: 'Streams are processed as they arrive, not on a nightly batch. Decisions act on what is happening now.',
-  },
-  {
-    icon: 'unlock',
-    title: 'Zero lock-in',
-    body: 'Open standards and open table formats throughout. Deploy on AWS, GCP, Azure or your own hardware, and leave whenever you want.',
-  },
-  {
-    icon: 'clock',
-    title: 'Querying within hours',
-    body: 'Configuration replaces connector code. Teams go from first connection to first answer in a day, not a quarter.',
-  },
-  {
-    icon: 'chat',
-    title: 'Ask in plain English',
-    body: 'No SQL required. Analysts, product managers and executives get precise answers without waiting on a data team.',
-  },
-  {
-    icon: 'shield',
-    title: 'Your data stays yours',
-    body: 'A metadata-only architecture means generated queries execute inside your environment. Raw data never leaves the perimeter.',
-  },
-  {
-    icon: 'trend',
-    title: 'Pointed at what is next',
-    body: 'Forecasting and anomaly detection run on the same pipelines, so prediction is part of the platform, not a bolted-on project.',
-  },
+const ticker = [
+  '2B+ events per day',
+  '100% uptime for 2+ years',
+  'Battle-tested on DIKSHA',
+  'Sub-second stream processing',
+  'Ask in plain English',
+  'Your data never leaves your perimeter',
 ];
 
-const halves = [
+const engines = [
   {
+    index: '01',
     name: 'Obsrv',
-    role: 'The data engineering half',
-    body: 'Ingestion, real-time processing and storage that has run at national scale for years. It gets your data trustworthy, current and query-ready without custom code.',
-    points: ['2B+ events/day at peak', '100% uptime over 2+ years', 'Apache 2.0 open source core'],
-    path: '/obsrv',
-    accent: 'from-[var(--color-brand-600)]/25',
+    role: 'The engine underneath',
+    blurb:
+      'Point it at a stream, a database or a file drop. Schemas infer themselves, transforms are configuration rather than code, and the pipeline holds at national scale.',
+    points: ['Ingest from anywhere', 'Real-time processing', 'No connector code to write'],
+    link: site.obsrv,
   },
   {
-    name: 'UnQuery',
-    role: 'The intelligence half',
-    body: 'Natural-language querying across modern analytics engines. It turns a question typed in plain English into a correct query, run in your own environment.',
-    points: [
-      'Druid, ClickHouse, Pinot, Iceberg and more',
-      'Metadata-only, queries run in your stack',
-      'Embeddable in your own product',
-    ],
-    path: '/unquery',
-    accent: 'from-[var(--color-signal-500)]/25',
+    index: '02',
+    name: 'unQuery',
+    role: 'The way you ask',
+    blurb:
+      'Ask a question the way you would say it out loud. unQuery resolves it against your metadata and runs the query inside your own environment — the data stays exactly where it is.',
+    points: ['Plain-English questions', 'Runs in your perimeter', 'Charts and summaries back'],
+    link: site.unquery,
   },
 ];
 ---
 
-<BaseLayout
-  title="Prognox — Predictive intelligence on your data"
-  suffix={false}
-  description={site.description}
->
-  <Hero />
-  <StatBand />
+<BaseLayout title="Prognox — Data. Answered. Ahead of time." suffix={false}>
+  {/* ─────────────────────────── 01 · Opening ─────────────────────────── */}
+  <section class="on-block relative isolate overflow-hidden">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-grid" aria-hidden="true"></div>
 
-  <!-- The combination story: why these two products are now one. -->
-  <section class="section-y">
-    <div class="container-page">
-      <SectionHeading
-        eyebrow="One platform"
-        title="Two proven products, one continuous path"
-        lead="Prognox is Obsrv and UnQuery brought together. Engineering the data and asking questions of it were always the same job — now they are the same platform."
-      />
+    <div
+      class="container-page relative z-10 flex min-h-[calc(100dvh-4rem)] flex-col justify-center py-20"
+    >
+      <p class="tag">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        Obsrv &times; unQuery
+      </p>
 
-      <div class="mt-12 grid gap-5 lg:mt-14 lg:grid-cols-2 lg:gap-6">
+      <h1 class="headline mt-8 font-bold">
+        <span class="block">Data.</span>
+        <span class="block text-amber">Answered.</span>
+        <span class="outline-text block">Ahead of time.</span>
+      </h1>
+
+      <p class="mt-9 max-w-xl text-[length:var(--text-lead)] leading-relaxed text-[var(--color-fg-muted)]">
+        Prognox is Obsrv and unQuery running as one platform — pipelines that build
+        themselves, questions anyone on the team can ask, and a read on what happens next.
+      </p>
+
+      <div class="mt-11 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <Button to="#demo" variant="amber">
+          <Icon name="play" size={14} solid />
+          Watch the demo
+        </Button>
+        <Button to="#platform" variant="wire">How it fits together</Button>
+      </div>
+
+      {/* Proof, set as a hairline table rather than a row of badge pills. */}
+      <dl class="stats mt-16 lg:mt-20">
         {
-          halves.map((half) => (
-            <article class="surface-card relative overflow-hidden p-7 lg:p-9">
-              <div
-                class={`pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b ${half.accent} to-transparent`}
-                aria-hidden="true"
-              />
-              <div class="relative">
-                <p class="text-sm font-semibold tracking-wide text-[var(--color-fg-subtle)] uppercase">
-                  {half.role}
-                </p>
-                <h3 class="mt-2 text-[length:var(--text-h2)] font-semibold">{half.name}</h3>
-                <p class="mt-4 leading-relaxed text-[var(--color-fg-muted)]">{half.body}</p>
-                <ul class="mt-6 space-y-2.5" role="list">
-                  {half.points.map((point) => (
-                    <li class="flex items-start gap-3 text-[0.9375rem]">
-                      <span class="mt-0.5 shrink-0 text-[var(--color-signal-400)]">
-                        <Icon name="check" size={19} />
-                      </span>
-                      <span class="text-[var(--color-fg-muted)]">{point}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Button to={half.path} variant="secondary" class="mt-8 w-full sm:w-auto">
-                  Explore {half.name}
-                </Button>
-              </div>
-            </article>
+          proofStats.map((stat) => (
+            <div class="stat">
+              <dt class="font-[family-name:var(--font-mono)] text-[0.625rem] tracking-[0.2em] text-[var(--color-fg-faint)] uppercase">
+                {stat.label}
+              </dt>
+              <dd class="mt-2 font-[family-name:var(--font-display)] text-[clamp(1.5rem,1.1rem+1.6vw,2.25rem)] font-bold tracking-[-0.04em] text-[var(--color-fg)]">
+                {stat.value}
+              </dd>
+            </div>
           ))
         }
-      </div>
+      </dl>
     </div>
   </section>
 
-  <section class="section-y bg-[var(--color-ink-950)]/40">
-    <div class="container-page">
-      <SectionHeading
-        eyebrow="Capabilities"
-        title="What you get on day one"
-        lead="Everything below ships with the platform. None of it requires a services engagement to switch on."
-      />
-      <div class="mt-12 lg:mt-14">
-        <FeatureGrid features={capabilities} />
-      </div>
-    </div>
-  </section>
-
-  <!-- Named-question example: concrete beats abstract. -->
-  <section class="section-y">
-    <div class="container-page">
-      <div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-        <div>
-          <SectionHeading
-            eyebrow="In practice"
-            title="From raw events to a straight answer"
-            lead="The question below is typed by a product manager with no SQL. Prognox resolves it against live data and returns a result you can act on."
-            align="left"
-          />
-          <Button to="/platform" variant="ghost" class="mt-6 -ml-2">
-            See how the pipeline fits together &rarr;
-          </Button>
-        </div>
-
-        <div class="surface-card overflow-hidden">
-          <div
-            class="flex items-center gap-2 border-b border-[var(--color-ink-700)] bg-[var(--color-ink-950)]/60 px-4 py-3"
-          >
-            <span class="h-2.5 w-2.5 rounded-full bg-[var(--color-ink-600)]"></span>
-            <span class="h-2.5 w-2.5 rounded-full bg-[var(--color-ink-600)]"></span>
-            <span class="h-2.5 w-2.5 rounded-full bg-[var(--color-ink-600)]"></span>
-            <span class="ml-2 text-xs text-[var(--color-fg-subtle)]">Prognox</span>
-          </div>
-          <div class="space-y-4 p-5 sm:p-6">
-            <div class="flex gap-3">
-              <span
-                class="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[var(--color-ink-700)] text-[var(--color-fg-muted)]"
-              >
-                <Icon name="users" size={15} />
+  {/* ──────────────────── Proof, running underneath ──────────────────── */}
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      {
+        [0, 1].map(() => (
+          <div class="ticker-row">
+            {ticker.map((item) => (
+              <span class="ticker-item">
+                {item}
+                <span class="ticker-sep">/</span>
               </span>
-              <p class="text-[0.9375rem] leading-relaxed text-[var(--color-fg)]">
-                Which districts dropped more than 15% in weekly active learners, and where is that
-                heading next month?
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  {/* ───────────────────────── 02 · The engines ───────────────────────── */}
+  <section id="platform" class="section-y relative scroll-mt-16">
+    <div class="container-page">
+      <p class="tag"><span class="tag-mark"></span>01 — The platform</p>
+      <h2 class="mt-6 max-w-[16ch] text-[length:var(--text-h2)] leading-[1.02] font-bold">
+        Two engines that finish <span class="text-amber">each other's work</span>
+      </h2>
+      <p class="mt-6 max-w-xl text-[length:var(--text-lead)] leading-relaxed text-[var(--color-fg-muted)]">
+        One gets the data ready. The other lets anyone interrogate it. Prognox is what you
+        get when they run as a single system.
+      </p>
+    </div>
+
+    <div class="diptych mt-14 lg:mt-20">
+      {
+        engines.map((engine, i) => (
+          <article class:list={['panel', i === 1 && 'panel-alt']}>
+            <span class="panel-index" aria-hidden="true">
+              {engine.index}
+            </span>
+            <div class="panel-body">
+              <p class="font-[family-name:var(--font-mono)] text-[0.6875rem] tracking-[0.2em] text-[var(--color-fg-faint)] uppercase">
+                {engine.role}
               </p>
-            </div>
-            <div class="flex gap-3">
-              <span
-                class="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[var(--color-brand-500)]/20 text-[var(--color-signal-400)]"
+              <h3 class="mt-4 text-[clamp(2.25rem,1.6rem+3vw,3.5rem)] leading-none font-bold">
+                {engine.name}
+              </h3>
+              <p class="mt-6 max-w-md leading-relaxed text-[var(--color-fg-muted)]">
+                {engine.blurb}
+              </p>
+              <ul class="mt-8 space-y-3" role="list">
+                {engine.points.map((point) => (
+                  <li class="flex items-start gap-3 text-[0.9375rem]">
+                    <span class="panel-tick mt-0.5 shrink-0">
+                      <Icon name="check" size={16} />
+                    </span>
+                    <span class="text-[var(--color-fg-muted)]">{point}</span>
+                  </li>
+                ))}
+              </ul>
+              <a
+                href={engine.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="panel-link mt-10 inline-flex min-h-11 items-center gap-2 self-start font-[family-name:var(--font-mono)] text-[0.75rem] font-medium tracking-[0.14em] uppercase"
               >
-                <Icon name="spark" size={15} />
-              </span>
-              <div class="min-w-0 flex-1">
-                <p class="text-[0.9375rem] leading-relaxed text-[var(--color-fg-muted)]">
-                  Four districts fell below the threshold last week. Three are trending back up;
-                  one continues to decline and is forecast to drop a further 9% by month end.
-                </p>
-                <pre
-                  class="mt-3 overflow-x-auto rounded-lg border border-[var(--color-ink-700)] bg-[var(--color-ink-950)] p-3 text-xs leading-relaxed text-[var(--color-fg-subtle)]"><code>SELECT district, wow_change, forecast_30d
-FROM learner_activity
-WHERE wow_change &lt; -0.15
-ORDER BY wow_change ASC</code></pre>
-                <p class="mt-2.5 text-xs text-[var(--color-fg-subtle)]">
-                  Generated and executed inside your environment.
-                </p>
-              </div>
+                Explore {engine.name}
+                <Icon name="arrowUpRight" size={15} />
+              </a>
             </div>
-          </div>
-        </div>
-      </div>
+          </article>
+        ))
+      }
+      <span class="seam-badge" aria-hidden="true">+</span>
+    </div>
+
+    <div class="container-page">
+      <p
+        class="mx-auto mt-14 max-w-2xl text-center text-[length:var(--text-h3)] leading-snug font-[family-name:var(--font-display)] tracking-[-0.03em] text-[var(--color-fg-muted)] lg:mt-20"
+      >
+        Raw events in, a plain-English question asked, an answer that also points forward.
+        <span class="text-[var(--color-fg)]">That loop is Prognox.</span>
+      </p>
     </div>
   </section>
 
-  <CTASection />
+  {/* ──────────────────────────── 03 · Demo ──────────────────────────── */}
+  {/* The one banded section on the site — the page shifts tone for the demo. */}
+  <section id="demo" class="section-y scroll-mt-16 bg-[var(--color-surface-alt)]">
+    <div class="container-page">
+      <div class="lg:flex lg:items-end lg:justify-between lg:gap-12">
+        <div class="max-w-xl">
+          <p class="tag"><span class="tag-mark"></span>02 — Five minutes</p>
+          <h2 class="mt-6 text-[length:var(--text-h2)] leading-[1.02] font-bold">
+            Watch it answer a <span class="underline-sweep">real question</span>
+          </h2>
+        </div>
+        <p class="mt-6 max-w-xs leading-relaxed text-[var(--color-fg-muted)] lg:mt-0 lg:text-right">
+          An agriculture dataset, pipeline to dashboard — asked in plain English, answered
+          across 24 districts in three states.
+        </p>
+      </div>
+
+      <figure class="mt-12 lg:mt-16">
+        <div class="screen">
+          <div class="screen-bar" aria-hidden="true">
+            <span></span><span></span><span></span>
+            <p class="screen-url">prognox · agri demo</p>
+          </div>
+          {/*
+            preload="none" so a phone on mobile data never pulls 29 MB before
+            the visitor asks for it — the poster frame stands in until play.
+          */}
+          <video
+            class="screen-video"
+            controls
+            preload="none"
+            playsinline
+            poster={href('/media/prognox-demo-poster.jpg')}
+            width="1920"
+            height="1080"
+          >
+            <source src={href('/media/prognox-demo.mp4')} type="video/mp4" />
+            Your browser cannot play embedded video.
+            <a href={href('/media/prognox-demo.mp4')}>Download the demo instead.</a>
+          </video>
+        </div>
+        <figcaption
+          class="mt-5 text-center font-[family-name:var(--font-mono)] text-[0.6875rem] tracking-[0.18em] text-[var(--color-fg-faint)] uppercase"
+        >
+          Obsrv + unQuery &middot; 5 min 11 s
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  {/* ─────────────────────────── 04 · Address ─────────────────────────── */}
+  <section id="contact" class="on-block relative isolate scroll-mt-16 overflow-hidden">
+    <div class="closing-glow" aria-hidden="true"></div>
+
+    <div class="container-page relative z-10 py-24 lg:py-36">
+      <p class="tag"><span class="tag-mark"></span>03 — Talk to us</p>
+      <h2 class="mt-6 max-w-[14ch] text-[length:var(--text-h2)] leading-[1.02] font-bold">
+        Bring us your messiest dataset.
+      </h2>
+      <p class="mt-6 max-w-lg text-[length:var(--text-lead)] leading-relaxed text-[var(--color-fg-muted)]">
+        Tell us what you are trying to answer. We will show you what Prognox does with it.
+      </p>
+
+      {/* The address is the call to action — no button wrapped around it. */}
+      <a href={`mailto:${site.email}`} class="mailto mt-12 inline-flex items-center gap-4">
+        <span>{site.email}</span>
+        <Icon name="arrowRight" size={28} class="mailto-arrow shrink-0" />
+      </a>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  /* ── 01 · Opening ──────────────────────────────────────────────────── */
+
+  .hero-glow {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(52rem 34rem at 8% 92%, rgb(240 165 46 / 0.16), transparent 60%),
+      radial-gradient(46rem 30rem at 92% 6%, rgb(43 79 216 / 0.4), transparent 62%);
+  }
+
+  /* Fine engineering grid — the "data" texture, kept almost subliminal. */
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgb(244 246 251 / 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(244 246 251 / 0.05) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(75% 70% at 35% 45%, #000 15%, transparent 100%);
+  }
+
+  .headline {
+    font-family: var(--font-display);
+    font-size: var(--text-display);
+    line-height: 0.92;
+    letter-spacing: -0.05em;
+  }
+
+  .pulse-dot {
+    width: 0.4375rem;
+    height: 0.4375rem;
+    border-radius: 9999px;
+    background: var(--color-amber);
+    box-shadow: 0 0 0 0 rgb(240 165 46 / 0.55);
+    animation: pulse 2.4s ease-out infinite;
+  }
+
+  @keyframes pulse {
+    70% {
+      box-shadow: 0 0 0 0.7rem rgb(240 165 46 / 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgb(240 165 46 / 0);
+    }
+  }
+
+  /* Stats as a hairline-ruled table — a quieter, more editorial proof block. */
+  .stats {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--color-hairline);
+    max-width: 44rem;
+  }
+
+  .stat {
+    padding-block: 1.15rem;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  @media (min-width: 640px) {
+    .stats {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border-bottom: 1px solid var(--color-hairline);
+    }
+
+    .stat {
+      border-bottom: 0;
+      padding-inline-end: 1.5rem;
+    }
+
+    .stat + .stat {
+      border-left: 1px solid var(--color-hairline);
+      padding-inline-start: 1.5rem;
+    }
+  }
+
+  /* ── Proof ticker ──────────────────────────────────────────────────── */
+
+  /* The strip stays dark in both themes — it is part of the cobalt block
+     that opens the page, not part of the page surface. */
+  .ticker {
+    overflow: hidden;
+    padding-block: 0.85rem;
+    background: var(--color-block-deep);
+    border-block: 1px solid var(--color-hairline-block);
+  }
+
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: slide 46s linear infinite;
+  }
+
+  .ticker-row {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  .ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.75rem;
+    padding-right: 1.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-bone-faint);
+    white-space: nowrap;
+  }
+
+  .ticker-sep {
+    color: var(--color-amber);
+  }
+
+  @keyframes slide {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track {
+      animation: none;
+    }
+  }
+
+  /* ── 02 · Diptych ──────────────────────────────────────────────────── */
+
+  .diptych {
+    position: relative;
+    display: grid;
+    border-block: 1px solid var(--color-hairline);
+  }
+
+  @media (min-width: 1024px) {
+    .diptych {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .panel {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(2.5rem, 1.5rem + 3.5vw, 5rem) max(1.25rem, env(safe-area-inset-left));
+    transition: background-color 0.35s ease;
+  }
+
+  @media (min-width: 640px) {
+    .panel {
+      padding-inline: 2rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .panel {
+      padding-inline: 3.5rem;
+    }
+
+    /* Each half hugs the seam rather than its own outer edge, so the two
+       blocks of text face each other across the centre line. */
+    .panel:first-child .panel-body {
+      margin-left: auto;
+      max-width: 32rem;
+      padding-right: 2.5rem;
+    }
+
+    .panel-alt .panel-body {
+      max-width: 32rem;
+      padding-left: 2.5rem;
+    }
+  }
+
+  .panel-body {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .panel + .panel {
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  @media (min-width: 1024px) {
+    .panel + .panel {
+      border-top: 0;
+      border-left: 1px solid var(--color-hairline);
+    }
+  }
+
+  .panel:hover {
+    background-color: var(--color-surface-alt);
+  }
+
+  /* Oversized stroked numeral, bleeding off the corner. */
+  .panel-index {
+    position: absolute;
+    top: -1.5rem;
+    right: -0.75rem;
+    font-family: var(--font-display);
+    font-size: clamp(7rem, 4rem + 12vw, 14rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.06em;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--color-hairline);
+    pointer-events: none;
+  }
+
+  .panel-tick {
+    color: var(--color-amber);
+  }
+
+  .panel-alt .panel-tick {
+    color: var(--color-link);
+  }
+
+  .panel-link {
+    color: var(--color-link);
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 0.2rem;
+    transition: gap 0.2s ease;
+  }
+
+  .panel-link:hover {
+    gap: 0.85rem;
+  }
+
+  /* The join sits on the seam — only where there is a seam to sit on. */
+  .seam-badge {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .seam-badge {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: grid;
+      width: 2.75rem;
+      height: 2.75rem;
+      translate: -50% -50%;
+      place-items: center;
+      border: 1px solid var(--color-hairline);
+      border-radius: 9999px;
+      background: var(--color-surface-raised);
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      color: var(--color-fg-faint);
+    }
+  }
+
+  /* ── 03 · Demo ─────────────────────────────────────────────────────── */
+
+  /* A marker sweep under the key phrase. Painted as a background rather than
+     a ::after, so it sits behind the glyphs without needing a z-index that
+     would drop it behind the section itself. */
+  .underline-sweep {
+    background-image: linear-gradient(var(--color-amber), var(--color-amber));
+    background-repeat: no-repeat;
+    background-size: 100% 0.3em;
+    background-position: 0 86%;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  /* A browser-ish frame, held slightly off-square so it reads as an object
+     on the page rather than a letterboxed embed. */
+  .screen {
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background: var(--color-block);
+    box-shadow: 0 40px 80px -40px rgb(11 23 51 / 0.45);
+    rotate: -0.4deg;
+    transition: rotate 0.45s ease;
+  }
+
+  .screen:hover,
+  .screen:focus-within {
+    rotate: 0deg;
+  }
+
+  .screen-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--color-hairline-block);
+  }
+
+  .screen-bar > span {
+    width: 0.5625rem;
+    height: 0.5625rem;
+    border-radius: 9999px;
+    background: rgb(244 246 251 / 0.2);
+  }
+
+  .screen-url {
+    margin-left: 0.85rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-bone-faint);
+  }
+
+  .screen-video {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    background: #000;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .screen {
+      rotate: 0deg;
+    }
+  }
+
+  /* ── 04 · Address ──────────────────────────────────────────────────── */
+
+  .closing-glow {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(40rem 26rem at 18% 0%, rgb(43 79 216 / 0.36), transparent 62%),
+      radial-gradient(48rem 30rem at 72% 108%, rgb(240 165 46 / 0.14), transparent 62%);
+  }
+
+  .mailto {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 0.8rem + 3.4vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    color: var(--color-bone);
+    word-break: break-word;
+    border-bottom: 2px solid var(--color-hairline-block);
+    padding-bottom: 0.3rem;
+    transition:
+      color 0.25s ease,
+      border-color 0.25s ease;
+  }
+
+  .mailto:hover {
+    color: var(--color-amber);
+    border-bottom-color: var(--color-amber);
+  }
+
+  .mailto-arrow {
+    transition: translate 0.25s ease;
+  }
+
+  .mailto:hover .mailto-arrow {
+    translate: 0.4rem 0;
+  }
+</style>

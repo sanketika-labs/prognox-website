@@ -1,0 +1,76 @@
+---
+import Icon from '~/components/Icon.astro';
+
+/**
+ * Light/dark switch.
+ *
+ * Both icons ship in the markup and CSS decides which one shows, so the
+ * button never flickers through a wrong state on hydration. The choice is
+ * stored under `prognox-theme`; a visitor who has never chosen gets light,
+ * which is the site's default rather than a system-derived guess.
+ */
+---
+
+<button
+  type="button"
+  data-theme-toggle
+  class="inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-[var(--color-hairline)] text-[var(--color-fg-muted)] transition-colors hover:border-[var(--color-amber)] hover:text-[var(--color-fg)]"
+  aria-label="Switch to dark theme"
+  aria-pressed="false"
+>
+  <span class="icon-sun"><Icon name="sun" size={17} /></span>
+  <span class="icon-moon"><Icon name="moon" size={17} /></span>
+</button>
+
+<style>
+  /* Show the destination, not the current state: on light you see the moon
+     you are about to switch to. */
+  .icon-sun {
+    display: none;
+  }
+
+  :global([data-theme='dark']) .icon-sun {
+    display: block;
+  }
+
+  :global([data-theme='dark']) .icon-moon {
+    display: none;
+  }
+</style>
+
+<script>
+  const KEY = 'prognox-theme';
+  const root = document.documentElement;
+
+  const label = (theme: string) =>
+    theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme';
+
+  const sync = (theme: string) => {
+    root.dataset.theme = theme;
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute('content', theme === 'dark' ? '#0c1222' : '#fbfaf7');
+
+    document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((button) => {
+      button.setAttribute('aria-pressed', String(theme === 'dark'));
+      button.setAttribute('aria-label', label(theme));
+    });
+  };
+
+  // The inline script in <head> already set data-theme before first paint;
+  // this only brings the buttons' labels into agreement with it.
+  sync(root.dataset.theme === 'dark' ? 'dark' : 'light');
+
+  document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      sync(next);
+      try {
+        localStorage.setItem(KEY, next);
+      } catch {
+        // Private browsing can refuse storage; the switch still works for
+        // this page view, it just will not be remembered.
+      }
+    });
+  });
+</script>

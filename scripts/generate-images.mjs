@@ -1,49 +1,57 @@
 /**
  * Renders the raster brand assets (Open Graph card, Apple touch icon) from
  * inline SVG so there are no binary blobs to hand-maintain in the repo.
+ * Colours mirror src/styles/tokens.css — cobalt block, amber accent.
  * Run with: node scripts/generate-images.mjs
  */
 import { writeFile } from 'node:fs/promises';
 import sharp from 'sharp';
 
-const MARK = `
-  <defs>
-    <linearGradient id="g" x1="0" y1="1" x2="1" y2="0">
-      <stop offset="0%" stop-color="#4a46c4"/>
-      <stop offset="55%" stop-color="#5b5bd6"/>
-      <stop offset="100%" stop-color="#22d3ee"/>
-    </linearGradient>
-  </defs>`;
+const BLOCK = '#10224b';
+const AMBER = '#f0a52e';
+const BONE = '#f4f6fb';
+const BONE_MUTED = '#a8b3cc';
+const BONE_FAINT = '#74819f';
+const HAIRLINE = '#22325c';
+
+/** The bracketed signal from src/components/Logo.astro, drawn at `s` scale. */
+const mark = (x, y, s) => `
+  <g transform="translate(${x} ${y}) scale(${s})">
+    <path d="M9 3H3v24h6M21 3h6v24h-6" stroke="${BONE}" stroke-opacity="0.4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M7.5 20.5L13 14l3.5 3L23 8.5" stroke="${AMBER}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <circle cx="23" cy="8.5" r="2.4" fill="${AMBER}"/>
+  </g>`;
 
 const og = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  ${MARK}
-  <radialGradient id="glow" cx="50%" cy="0%" r="75%">
-    <stop offset="0%" stop-color="#5b5bd6" stop-opacity="0.55"/>
-    <stop offset="60%" stop-color="#22d3ee" stop-opacity="0.12"/>
-    <stop offset="100%" stop-color="#0b0e1a" stop-opacity="0"/>
-  </radialGradient>
-  <rect width="1200" height="630" fill="#0b0e1a"/>
-  <rect width="1200" height="630" fill="url(#glow)"/>
+  <defs>
+    <radialGradient id="cobalt" cx="88%" cy="6%" r="80%">
+      <stop offset="0%" stop-color="#2b4fd8" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#2b4fd8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="warm" cx="8%" cy="96%" r="70%">
+      <stop offset="0%" stop-color="${AMBER}" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="${AMBER}" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="${BLOCK}"/>
+  <rect width="1200" height="630" fill="url(#cobalt)"/>
+  <rect width="1200" height="630" fill="url(#warm)"/>
 
-  <rect x="80" y="86" width="74" height="74" rx="20" fill="url(#g)"/>
-  <path d="M97 139L109 125L119 133L137 112" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <circle cx="137" cy="112" r="6.5" fill="#fff"/>
-  <text x="172" y="137" font-family="Helvetica, Arial, sans-serif" font-size="42" font-weight="600" fill="#eceefb">Prognox</text>
+  ${mark(80, 78, 1.6)}
+  <text x="166" y="128" font-family="Helvetica, Arial, sans-serif" font-size="40" font-weight="700" letter-spacing="-1.5" fill="${BONE}">prognox</text>
 
-  <text x="80" y="300" font-family="Helvetica, Arial, sans-serif" font-size="82" font-weight="600" fill="#eceefb">Predictive intelligence</text>
-  <text x="80" y="392" font-family="Helvetica, Arial, sans-serif" font-size="82" font-weight="600" fill="#22d3ee">on your data</text>
+  <text x="80" y="288" font-family="Helvetica, Arial, sans-serif" font-size="92" font-weight="700" letter-spacing="-4" fill="${BONE}">Data. <tspan fill="${AMBER}">Answered.</tspan></text>
+  <text x="80" y="384" font-family="Helvetica, Arial, sans-serif" font-size="92" font-weight="700" letter-spacing="-4" fill="${BONE_MUTED}">Ahead of time.</text>
 
-  <text x="80" y="470" font-family="Helvetica, Arial, sans-serif" font-size="30" fill="#a6abc8">Real-time pipelines. Plain-English answers. Forecasts that arrive early.</text>
+  <text x="80" y="462" font-family="Helvetica, Arial, sans-serif" font-size="29" fill="${BONE_MUTED}">Real-time pipelines. Plain-English answers. A read on what happens next.</text>
 
-  <rect x="80" y="520" width="1040" height="1" fill="#2a3048"/>
-  <text x="80" y="570" font-family="Helvetica, Arial, sans-serif" font-size="26" fill="#767c9b">Obsrv + UnQuery, from Sanketika</text>
+  <rect x="80" y="520" width="1040" height="1" fill="${HAIRLINE}"/>
+  <text x="80" y="570" font-family="Helvetica, Arial, sans-serif" font-size="25" letter-spacing="3" fill="${BONE_FAINT}">OBSRV &#215; UNQUERY &#183; FROM SANKETIKA</text>
 </svg>`;
 
 const touchIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180">
-  ${MARK}
-  <rect width="180" height="180" rx="40" fill="url(#g)"/>
-  <path d="M42 120L70 86L94 104L138 53" stroke="#fff" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <circle cx="138" cy="53" r="14" fill="#fff"/>
+  <rect width="180" height="180" rx="40" fill="${BLOCK}"/>
+  ${mark(30, 30, 4)}
 </svg>`;
 
 for (const [name, svg] of [

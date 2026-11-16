@@ -1,49 +1,36 @@
 ---
 /**
- * Placeholder Prognox wordmark.
- * The mark is a rising signal line — the forward-looking motif reused in
- * section dividers and the platform flow diagram.
+ * Prognox mark: a bracketed signal that breaks upward out of its own frame.
+ * The brackets are the measured past, the amber stroke is the projection.
+ * Placeholder identity — swap this one file when real brand assets arrive.
  */
 interface Props {
-  /** Render the mark alone, without the wordmark text. */
-  markOnly?: boolean;
   class?: string;
 }
 
-const { markOnly = false, class: className = '' } = Astro.props;
+const { class: className = '' } = Astro.props;
 ---
 
 <span class={`inline-flex items-center gap-2.5 ${className}`}>
-  <svg
-    width="34"
-    height="34"
-    viewBox="0 0 34 34"
-    fill="none"
-    aria-hidden="true"
-    class="shrink-0"
-  >
-    <defs>
-      <linearGradient id="prognox-mark" x1="0" y1="34" x2="34" y2="0">
-        <stop offset="0%" stop-color="#4a46c4"></stop>
-        <stop offset="55%" stop-color="#5b5bd6"></stop>
-        <stop offset="100%" stop-color="#22d3ee"></stop>
-      </linearGradient>
-    </defs>
-    <rect width="34" height="34" rx="9" fill="url(#prognox-mark)"></rect>
+  <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true" class="shrink-0">
     <path
-      d="M8 22.5L13.2 16.4L17.6 19.8L26 10"
-      stroke="#fff"
+      d="M9 3H3v24h6M21 3h6v24h-6"
+      stroke="currentColor"
+      stroke-opacity="0.4"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"></path>
+    <path
+      d="M7.5 20.5L13 14l3.5 3L23 8.5"
+      stroke="var(--color-amber)"
       stroke-width="2.4"
       stroke-linecap="round"
-      stroke-linejoin="round"
-    ></path>
-    <circle cx="26" cy="10" r="2.9" fill="#fff"></circle>
+      stroke-linejoin="round"></path>
+    <circle cx="23" cy="8.5" r="2.4" fill="var(--color-amber)"></circle>
   </svg>
-  {
-    !markOnly && (
-      <span class="text-[1.3rem] font-semibold tracking-tight text-[var(--color-fg)]">
-        Prognox
-      </span>
-    )
-  }
+  <span
+    class="font-[family-name:var(--font-display)] text-[1.2rem] font-bold tracking-[-0.04em] text-[var(--color-fg)]"
+  >
+    prognox
+  </span>
 </span>
