@@ -47,14 +47,20 @@ const ogImage = new URL(href('/og.png'), Astro.site).href;
     <meta name="twitter:image" content={ogImage} />
 
     {/*
-      Applies the stored theme before the first paint, so a visitor who chose
-      dark never sees a white flash. Light is the default when nothing is
-      stored. Deliberately inline and synchronous — a deferred module would
-      run after paint, which is the whole problem this avoids.
+      Resolves the theme before the first paint, so nobody sees a flash of the
+      wrong one. An explicit choice outranks everything; failing that the
+      visitor's system appearance decides, which is also what gives us an
+      evening switch — macOS, iOS and Windows all flip theirs at sunset when
+      set to Auto, and we follow. Deliberately inline and synchronous: a
+      deferred module would run after paint, which is the problem this avoids.
     */}
     <script is:inline>
       try {
-        if (localStorage.getItem('prognox-theme') === 'dark') {
+        var stored = localStorage.getItem('prognox-theme');
+        var dark = stored
+          ? stored === 'dark'
+          : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (dark) {
           document.documentElement.dataset.theme = 'dark';
           document.querySelector('meta[name="theme-color"]').content = '#0c1222';
         }

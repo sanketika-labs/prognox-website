@@ -5,9 +5,9 @@ import Icon from '~/components/Icon.astro';
  * Light/dark switch.
  *
  * Both icons ship in the markup and CSS decides which one shows, so the
- * button never flickers through a wrong state on hydration. The choice is
- * stored under `prognox-theme`; a visitor who has never chosen gets light,
- * which is the site's default rather than a system-derived guess.
+ * button never flickers through a wrong state on hydration. A choice made
+ * here is stored under `prognox-theme` and outranks everything; a visitor
+ * who has never chosen follows their system appearance instead.
  */
 ---
 
@@ -60,6 +60,21 @@ import Icon from '~/components/Icon.astro';
   // The inline script in <head> already set data-theme before first paint;
   // this only brings the buttons' labels into agreement with it.
   sync(root.dataset.theme === 'dark' ? 'dark' : 'light');
+
+  // Until someone picks a side, keep following the system — so a page left
+  // open across sunset switches with the OS rather than going stale.
+  const stored = () => {
+    try {
+      return localStorage.getItem(KEY);
+    } catch {
+      return null;
+    }
+  };
+
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
+    if (stored()) return;
+    sync(event.matches ? 'dark' : 'light');
+  });
 
   document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((button) => {
     button.addEventListener('click', () => {

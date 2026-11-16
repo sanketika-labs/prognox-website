@@ -50,8 +50,10 @@ names a literal colour, so there is not one `dark:` variant in the codebase.
 | `--color-bone*`, `--color-hairline-block` | On the cobalt block — identical in both themes, since the block is dark either way |
 | `--color-amber`, `--color-link` | The single loud accent, and links |
 
-Light is the default; the choice persists in `localStorage` under
-`prognox-theme`. Sections that sit on the cobalt block take the `.on-block`
+A first-time visitor gets whichever theme their system is set to, and the
+page keeps following it live — so an OS set to switch at sunset switches the
+site too. Using the header toggle takes over: that choice persists in
+`localStorage` under `prognox-theme` and the system is no longer consulted. Sections that sit on the cobalt block take the `.on-block`
 class, which locally redefines the `--color-fg*` and `--color-hairline`
 variables to their bone equivalents so their children keep reading the plain
 semantic names.
